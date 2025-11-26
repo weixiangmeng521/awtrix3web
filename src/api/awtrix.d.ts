@@ -1,0 +1,22 @@
+export type AwtrixStats = {
+    bat: number;
+    bat_raw: number;
+    type: number;
+    lux: number;
+    ldr_raw: number;
+    ram: number;
+    bri: number;
+    temp: number;
+    hum: number;
+    uptime: number;
+    wifi_signal: number;
+    messages: number;
+    version: string;
+    indicator1: boolean;
+    indicator2: boolean;
+    indicator3: boolean;
+    app: string;
+    uid: string;
+    matrix: boolean;
+    ip_address: string;
+};

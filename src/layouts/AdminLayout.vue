@@ -3,14 +3,14 @@
         <v-layout class="rounded rounded-md border main">
 
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
-            <v-app-bar class="px-3">
+            <v-app-bar class="px-3" style="position: fixed;">
                 <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
                 <v-spacer></v-spacer>
                 <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" :text="theme === 'light' ? 'Sun' : 'Mon'"
                     slim @click="onChangeTheme"></v-btn>
             </v-app-bar>
 
-            <v-navigation-drawer permanent v-model="shouldOpenDrawer">
+            <v-navigation-drawer permanent v-model="shouldOpenDrawer" style="position: fixed;">
                 <v-list nav>
                     <v-list-item v-for="item in navList" :key="item.link" :title="item.name" @click="nav2(item.link)">
                         <template v-slot:prepend>
