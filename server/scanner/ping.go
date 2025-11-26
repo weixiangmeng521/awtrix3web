@@ -58,18 +58,3 @@ func getMAC(ip string) string {
 	}
 	return ""
 }
-
-func vendorLookup(mac string) string {
-	oui := strings.ToUpper(strings.Replace(mac, ":", "", -1)[:6])
-	// 常用 OUIs，可以扩展到数据库文件中
-	vendors := map[string]string{
-		"DC4A3E": "Xiaomi",
-		"8C8590": "Apple",
-		"F4F5DB": "Samsung",
-		"841FE8": "ESP / IoT Boards",
-	}
-	if v, ok := vendors[oui]; ok {
-		return v
-	}
-	return "Unknown"
-}

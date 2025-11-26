@@ -21,7 +21,7 @@ const definedServerTypeList = [
 // request
 export type WebSoketSendDataType<T> = {
     event: (typeof websoketEventList)[number],
-    playload?: T,
+    payload?: T,
     message?: string,
 }
 
@@ -29,7 +29,7 @@ export type WebSoketSendDataType<T> = {
 // response
 export type WebSocketResponseDataType<T> = {
     type: (typeof definedServerTypeList)[number],
-    playload?: T,
+    payload?: T,
     message?: string,
     refer: string,
 }
@@ -38,12 +38,11 @@ export type WebSocketResponseDataType<T> = {
 export function useWebSocket() {
     const socket = ref<WebSocket>();
     const isConnected = ref(false);
-    let onMessageCallback: ((msg:WebSocketResponseDataType<unknown>) => void)|undefined;
+    let onMessageCallback: ((msg: WebSocketResponseDataType<unknown>) => void) | undefined;
 
-    // on message callback bind
-    const onMessage = (cb:((msg:WebSocketResponseDataType<unknown>) => void)) => {
-        onMessageCallback = cb;
-    }
+    const onMessage = <T = unknown>(cb: (msg: WebSocketResponseDataType<T>) => void) => {
+        onMessageCallback = cb as (msg: WebSocketResponseDataType<unknown>) => void;
+    };
 
     // connect data
     const connect = () => {
@@ -75,10 +74,10 @@ export function useWebSocket() {
         }
     };
 
-    let intervalId:number;
-    function ping(){
+    let intervalId: number;
+    function ping() {
         // ping - pong
-        send({event: "ping"});
+        send({ event: "ping" });
     }
 
     onMounted(() => {

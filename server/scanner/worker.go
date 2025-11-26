@@ -56,8 +56,7 @@ func worker(tasks chan Workdist, resultChan chan Workdist, wg *sync.WaitGroup) {
 		return
 	}
 	host := task.Host
-	res := ping(host)
-	if res {
+	if ping(host) {
 		resultChan <- Workdist{Host: host}
 	}
 }

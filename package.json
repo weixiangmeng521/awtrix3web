@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "server": "cd ./server && go run main.go",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@fontsource/roboto": "5.2.7",
     "@mdi/font": "7.4.47",
+    "animate.css": "^4.1.1",
     "pinia": "^3.0.3",
     "vue": "^3.5.21",
     "vue-router": "^4.5.1",

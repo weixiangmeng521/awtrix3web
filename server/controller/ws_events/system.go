@@ -22,10 +22,10 @@ func JSONStringify[T any](message controller.WSServerMessage[T]) []byte {
  */
 func HeartBeatEvent(conn *websocket.Conn, data *controller.WSClientMessage[any]) {
 	message := controller.WSServerMessage[string]{
-		Type:     1,
-		Playload: "pong",
-		Message:  "心跳响应",
-		Refer:    data.Event,
+		Type:    1,
+		Payload: "pong",
+		Message: "心跳响应",
+		Refer:   data.Event,
 	}
 	b := JSONStringify(message)
 	err := conn.WriteMessage(websocket.TextMessage, b)

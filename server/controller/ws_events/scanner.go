@@ -16,10 +16,10 @@ func ScannDevicesEvent(conn *websocket.Conn, data *controller.WSClientMessage[an
 	// process event
 	var onProcess = func(host string) {
 		message := controller.WSServerMessage[string]{
-			Type:     1,
-			Playload: host,
-			Message:  "scaning",
-			Refer:    data.Event,
+			Type:    1,
+			Payload: host,
+			Message: "scaning",
+			Refer:   data.Event,
 		}
 		b := JSONStringify(message)
 		err := conn.WriteMessage(websocket.TextMessage, b)

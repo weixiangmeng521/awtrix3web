@@ -49,7 +49,7 @@ func Address_Processing(ip string) []string {
 	}
 
 	host := fmt.Sprintf("%s.%s.%s", a[0], a[1], a[2])
-	fmt.Println("获取本机地址:", ip, "------->  处理为网段:", host)
+	// fmt.Println("获取本机地址:", ip, "------->  处理为网段:", host)
 	IpHalf_Str = append(IpHalf_Str, host)
 	return IpHalf_Str
 }

@@ -20,7 +20,7 @@
                 </v-list>
             </v-navigation-drawer>
 
-            <v-main class="d-flex align-center justify-center" height="300">
+            <v-main class="d-flex justify-center">
                 <v-container>
                     <slot name="main" />
                     <AppFooter />
