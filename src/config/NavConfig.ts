@@ -15,6 +15,11 @@ const navList = [
         link: "/scanner",
         icon: "mdi-memory"
     },
+    {
+        name: "Device Info",
+        link: "/device-info",
+        icon: "mdi-memory"
+    },    
 ] as NavItem[];
 
 

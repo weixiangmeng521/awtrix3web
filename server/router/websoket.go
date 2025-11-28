@@ -4,7 +4,6 @@ import (
 	"awtrix3web/controller"
 	"awtrix3web/controller/ws_events"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -31,16 +30,16 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	fmt.Println("Client connected")
+	log.Println("Client connected")
 
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
-			fmt.Println("Client disconnected")
+			log.Println("Client disconnected")
 			return
 		}
 
-		fmt.Println("Received:", string(msg))
+		log.Println("Received:", string(msg))
 		data, err := JSONParser[any](msg)
 		if err != nil {
 			log.Println("Unmarshal fail:" + string(msg))

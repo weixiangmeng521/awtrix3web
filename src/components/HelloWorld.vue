@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" max-width="900">
+  <v-container class="flex" max-width="1200">
     hello world
   </v-container>
 </template>

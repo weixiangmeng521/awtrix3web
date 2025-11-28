@@ -1,10 +1,10 @@
 <template>
     <v-app :theme="theme">
         <v-layout class="rounded rounded-md border main">
-
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
             <v-app-bar class="px-3" style="position: fixed;">
                 <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+                <img src="@/assets/awtrix-logo.png" alt="Awtrix Logo" height="32" :class="!isConnected ? 'grayscale ml-3' : 'ml-3'"/>
                 <v-spacer></v-spacer>
                 <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" :text="theme === 'light' ? 'Sun' : 'Mon'"
                     slim @click="onChangeTheme"></v-btn>
@@ -31,10 +31,11 @@
 </template>
 <script lang="ts" setup>
 import navList from "@/config/NavConfig"
+import { useWebSocket } from "@/hooks/useWebSocket";
 const router = useRouter()
 const theme = ref('light')
 const shouldOpenDrawer = ref(false)
-
+const { isConnected } = useWebSocket();
 
 // changec theme
 function onChangeTheme() {
@@ -71,5 +72,10 @@ onUnmounted(() => {
 <style lang="css" scoped>
 .main {
     min-height: 100vh;
+}
+
+.grayscale{ 
+    filter: grayscale(100%);
+    transition: .3s;
 }
 </style>

@@ -75,6 +75,8 @@ export function useWebSocket() {
     };
 
     let intervalId: number;
+
+    // heartbeat function
     function ping() {
         // ping - pong
         send({ event: "ping" });
