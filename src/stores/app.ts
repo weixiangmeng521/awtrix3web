@@ -25,6 +25,7 @@ const loadDataBoforeCheckLocalStorage = <T>(key: string, state: PiniaCustomState
 function setData2LocalStoraget(that: any, key: string, data: unknown){
   const obj = that as unknown as { [key: string]: unknown };
   obj[key] = data;
+  window.localStorage.setItem(key, JSON.stringify(data));
 }
 
 
@@ -40,7 +41,6 @@ export const useAppStore = defineStore('app', {
     },
     getAwtrixInfo: (state) => {
       const data = loadDataBoforeCheckLocalStorage<AwtrixStats>('awtrixInfo', state);
-      console.log(data);
       return data;
     },
   },
@@ -48,7 +48,7 @@ export const useAppStore = defineStore('app', {
     setShouldConnectDeviceIp(ip: string) {
       setData2LocalStoraget(this, "connectedDeviceIp", ip)
     },
-    setAwtrixDeviceVersion(info: AwtrixStats) {
+    setAwtrixDeviceInfo(info: AwtrixStats) {
       setData2LocalStoraget(this, "awtrixInfo", info)
     },
   },

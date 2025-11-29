@@ -12,10 +12,17 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    AwtrixAppInfo: typeof import('./components/AwtrixAppInfo.vue')['default']
     AwtrixDeviceInfo: typeof import('./components/AwtrixDeviceInfo.vue')['default']
+    CLink: typeof import('./components/CLink.vue')['default']
+    CSwitch: typeof import('./components/CSwitch.vue')['default']
+    CustomATag: typeof import('./components/CustomATag.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Link: typeof import('./components/Link.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Scanner: typeof import('./components/Scanner.vue')['default']
+    SwitchButton: typeof import('./components/SwitchButton.vue')['default']
+    WifiIcon: typeof import('./components/WifiIcon.vue')['default']
   }
 }

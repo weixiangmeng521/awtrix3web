@@ -20,3 +20,7 @@ export type AwtrixStats = {
     matrix: boolean;
     ip_address: string;
 };
+
+export type AppLoopInfo= {
+    [key:string]: number;
+}

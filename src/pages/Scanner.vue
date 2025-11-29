@@ -98,7 +98,7 @@ async function selectDevice(device: DeviceInfo) {
   // console.log(httpClient);
   const client = new AwtrixClient(device.ip);
   const data = await client.getAwtrixDeviceInfo();
-  appStore.setAwtrixDeviceVersion(data);
+  appStore.setAwtrixDeviceInfo(data);
   scanState.value = 'idle';
 }
 
