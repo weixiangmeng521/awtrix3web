@@ -1,5 +1,5 @@
 // Utilities
-import type { AwtrixStats } from '@/api/awtrix';
+import type { AwtrixSettings, AwtrixStats } from '@/api/awtrix';
 import { defineStore, type PiniaCustomStateProperties, type StateTree } from 'pinia'
 
 
@@ -14,7 +14,7 @@ const loadDataBoforeCheckLocalStorage = <T>(key: string, state: PiniaCustomState
     try {
       const res = JSON.parse(data) as T;
       return res as T;
-    }catch(e){
+    } catch (e) {
       return data as T;
     }
   }
@@ -22,7 +22,7 @@ const loadDataBoforeCheckLocalStorage = <T>(key: string, state: PiniaCustomState
 }
 
 
-function setData2LocalStoraget(that: any, key: string, data: unknown){
+function setData2LocalStoraget(that: any, key: string, data: unknown) {
   const obj = that as unknown as { [key: string]: unknown };
   obj[key] = data;
   window.localStorage.setItem(key, JSON.stringify(data));
@@ -34,14 +34,17 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     connectedDeviceIp: '',
     awtrixInfo: null as null | AwtrixStats,
+    awtrixSettings: null as null | AwtrixSettings,
   }),
   getters: {
     getConnectedDeviceIp: (state) => {
       return loadDataBoforeCheckLocalStorage<string>('connectedDeviceIp', state);
     },
     getAwtrixInfo: (state) => {
-      const data = loadDataBoforeCheckLocalStorage<AwtrixStats>('awtrixInfo', state);
-      return data;
+      return loadDataBoforeCheckLocalStorage<AwtrixStats>('awtrixInfo', state);
+    },
+    getAwtrixSettings: (state) => {
+      return loadDataBoforeCheckLocalStorage<AwtrixSettings>('awtrixSettings', state);
     },
   },
   actions: {
@@ -51,5 +54,12 @@ export const useAppStore = defineStore('app', {
     setAwtrixDeviceInfo(info: AwtrixStats) {
       setData2LocalStoraget(this, "awtrixInfo", info)
     },
+    setAwtrixSettings(info: AwtrixSettings) {
+      setData2LocalStoraget(this, "awtrixSettings", info)
+    },
+    clearAll() {
+      window.localStorage.clear();
+      this.$dispose();
+    }
   },
 })

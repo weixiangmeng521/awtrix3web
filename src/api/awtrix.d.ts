@@ -24,3 +24,45 @@ export type AwtrixStats = {
 export type AppLoopInfo= {
     [key:string]: number;
 }
+
+export interface AwtrixSettings {
+  MATP: boolean; // ok
+  ABRI: boolean; // OK
+  BRI: number; // OK
+  ATRANS: boolean; // OK
+  TCOL: number;
+  TEFF: number;
+  TSPEED: number;
+  ATIME: number;
+  TMODE: number;
+  CHCOL: number;
+  CTCOL: number;
+  CBCOL: number;
+  TFORMAT: string;
+  DFORMAT: string;
+  SOM: boolean;
+  CEL: boolean;
+  BLOCKN: boolean;
+  MAT: number;
+  SOUND: boolean;
+  GAMMA: number;
+  UPPERCASE: boolean;
+  CCORRECTION: string;
+  CTEMP: string;
+  WD: boolean;
+  WDCA: number;
+  WDCI: number;
+  TIME_COL: number;
+  DATE_COL: number;
+  HUM_COL: number;
+  TEMP_COL: number;
+  BAT_COL: number;
+  SSPEED: number;
+  TIM: boolean; // OK
+  DAT: boolean; // OK
+  HUM: boolean; // OK
+  TEMP: boolean; // OK
+  BAT: boolean; // OK
+  VOL: number;
+  OVERLAY: string;
+}

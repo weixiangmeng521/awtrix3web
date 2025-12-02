@@ -1,13 +1,13 @@
 <template>
-    <v-card-title class="mt-4">{{ props.title }}</v-card-title>
-    <v-switch :model-value="props.state" :label="`${props.state ? 'ON' : 'OFF'}`" hide-details inset
-        @update:model-value="(val) => updateState(val ?? false)" :color="props.state ? 'rgb(76, 175, 80)' : ''"
-        :class="props.state ? 'deep' : ''">
-        <template v-slot:label>
-            <v-progress-circular v-if="lock" :indeterminate="lock" class="ms-2" size="24"></v-progress-circular>
-        </template>
-    </v-switch>
-
+    <div>
+        <v-card-title class="mt-4">{{ props.title }}</v-card-title>
+        <v-switch :model-value="props.state" hide-details inset @update:model-value="(val) => updateState(val ?? false)"
+            :color="props.state ? 'rgb(76, 175, 80)' : ''" :class="props.state ? 'deep' : ''">
+            <template v-slot:label>
+                <v-progress-circular v-if="lock" :indeterminate="lock" class="ms-2" size="24"></v-progress-circular>
+            </template>
+        </v-switch>
+    </div>
 </template>
 <script lang="ts" setup>
 const props = defineProps({
@@ -18,7 +18,7 @@ const props = defineProps({
     state: {
         type: Boolean,
         require: true,
-    }
+    },
 });
 
 const lock = ref<boolean>(false);

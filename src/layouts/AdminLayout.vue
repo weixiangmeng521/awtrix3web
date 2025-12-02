@@ -5,6 +5,9 @@
             <v-app-bar class="px-3" style="position: fixed;">
                 <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
                 <img src="@/assets/awtrix-logo.png" alt="Awtrix Logo" height="32" :class="!isConnected ? 'grayscale ml-3' : 'ml-3'"/>
+                <p class="font-weight-bold ml-3">
+                    Awtrix3
+                </p>
                 <v-spacer></v-spacer>
                 <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" :text="theme === 'light' ? 'Sun' : 'Mon'"
                     slim @click="onChangeTheme"></v-btn>

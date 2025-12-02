@@ -7,8 +7,8 @@
                 Device Info
             </v-card-title>
             <v-card-subtitle>
-                UID: {{ props.deviceInfo?.uid }} | v{{
-                    props.deviceInfo?.version }}
+                UID: {{ props.deviceInfo?.uid ? props.deviceInfo?.uid : "unknown"}} | {{
+                    props.deviceInfo?.version ? "v" + props.deviceInfo?.version:  "unknwon" }}
             </v-card-subtitle>
         </v-card-item>
 
@@ -71,10 +71,6 @@
                     </tr>
                 </tbody>
             </v-table>
-        </v-card-text>
-
-        <v-card-text v-else>
-            Loading...
         </v-card-text>
     </v-card>
 </template>
