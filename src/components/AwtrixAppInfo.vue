@@ -16,6 +16,7 @@
 
             <CSwitch :state="(props.autoNextApp ?? false)" title="Auto switch APP"
                 @update-state="changeAutoNextAppState" />
+            <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Switch transition" @on-changed="onTransitionChangedEvent"/>
 
             <!-- divider begin -->
             <v-divider></v-divider>
@@ -49,6 +50,7 @@ const props = defineProps<{
     powerState: boolean,
     autoBrightness: boolean,
     autoNextApp: boolean,
+    transitionList: string[],
 }>();
 
 const emit = defineEmits<{
@@ -56,8 +58,13 @@ const emit = defineEmits<{
     changePower: [value: Boolean],
     changeAutoBrightness: [value: Boolean],
     changeAutoNextApp: [value: Boolean],
+    changeTransitionEffect: [value: number],
     onScreenBrightnessSet: [value: number],
 }>()
+
+const onTransitionChangedEvent = (effectId: number) => {
+    emit("changeTransitionEffect", effectId);
+}
 
 const changeState = (val: Boolean) => {
     emit('changePower', val)
@@ -75,9 +82,10 @@ const changeAppEvent = (name: string) => {
     emit('changeApp', name);
 }
 
-const onSlideChangeEvent = (value: number) => {
-    emit('onScreenBrightnessSet', value);
+const onSlideChangeEvent = (value: Number) => {
+    emit('onScreenBrightnessSet', value as number);
 }
+
 
 </script>
 <style lang="css" scoped>

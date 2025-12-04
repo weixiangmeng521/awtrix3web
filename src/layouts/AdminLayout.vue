@@ -4,13 +4,14 @@
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
             <v-app-bar class="px-3" style="position: fixed;">
                 <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-                <img src="@/assets/awtrix-logo.png" alt="Awtrix Logo" height="32" :class="!isConnected ? 'grayscale ml-3' : 'ml-3'"/>
+                <img src="@/assets/awtrix-logo.png" alt="Awtrix Logo" height="32"
+                    :class="!isConnected ? 'grayscale ml-3' : 'ml-3'" />
                 <p class="font-weight-bold ml-3">
                     Awtrix3
                 </p>
                 <v-spacer></v-spacer>
-                <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" :text="theme === 'light' ? 'Sun' : 'Mon'"
-                    slim @click="onChangeTheme"></v-btn>
+                <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+                    :text="theme === 'light' ? 'Sun' : 'Mon'" slim @click="onChangeTheme"></v-btn>
             </v-app-bar>
 
             <v-navigation-drawer permanent v-model="shouldOpenDrawer" style="position: fixed;">
@@ -21,6 +22,18 @@
                         </template>
                     </v-list-item>
                 </v-list>
+
+                <template v-slot:append>
+                    <div class="pa-2" v-if="appStore.getConnectedDeviceIp && shouldShodRebootBtn()">
+                        <v-btn block prepend-icon="mdi-refresh" class="pa-2" color="red" variant="outlined"
+                            @click="rebootDevice">
+                            <template v-slot:prepend>
+                                <v-icon color="red"></v-icon>
+                            </template>
+                            Reboot Device
+                        </v-btn>
+                    </div>
+                </template>
             </v-navigation-drawer>
 
             <v-main class="d-flex justify-center">
@@ -33,12 +46,22 @@
     </v-app>
 </template>
 <script lang="ts" setup>
+import AwtrixClient from "@/api/awtrixClient";
 import navList from "@/config/NavConfig"
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { useAppStore } from "@/stores/app";
+import { encodeBase64 } from "@/utils/base64";
 const router = useRouter()
+const route = useRoute()
 const theme = ref('light')
 const shouldOpenDrawer = ref(false)
 const { isConnected } = useWebSocket();
+const awtrixClinet = ref<AwtrixClient>();
+const appStore = useAppStore();
+const DO_NOT_SHOW_REBOOT_BTN_NAV_LIST = [
+    "/reconnection/[refer]",
+];
+
 
 // changec theme
 function onChangeTheme() {
@@ -46,20 +69,35 @@ function onChangeTheme() {
 }
 
 // navgation to
-const nav2 = (link: string) => {
+function nav2(link: string) {
     router.push(link)
 }
 
-function toggleDrawer(){
+function toggleDrawer() {
     shouldOpenDrawer.value = !shouldOpenDrawer.value
 }
 
 // when windows width changed
-function onWindowsChangedEvent(){
+function onWindowsChangedEvent() {
     const width = window.innerWidth;
     shouldOpenDrawer.value = width >= 1200;
 }
 
+function shouldShodRebootBtn(){
+    const name = route.name;
+    return !DO_NOT_SHOW_REBOOT_BTN_NAV_LIST.includes(name);
+}
+
+async function rebootDevice() {
+    if (!awtrixClinet.value) return;
+    const currentPath = route.path;
+    const param = encodeBase64(currentPath);
+    nav2(`/reconnection/${param}`);
+}
+
+onBeforeMount(() => {
+    awtrixClinet.value = new AwtrixClient(appStore.getConnectedDeviceIp);
+})
 
 onMounted(() => {
     onWindowsChangedEvent()
@@ -77,7 +115,7 @@ onUnmounted(() => {
     min-height: 100vh;
 }
 
-.grayscale{ 
+.grayscale {
     filter: grayscale(100%);
     transition: .3s;
 }

@@ -20,6 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/device-info': RouteRecordInfo<'/device-info', '/device-info', Record<never, never>, Record<never, never>>,
+    '/reconnection/[refer]': RouteRecordInfo<'/reconnection/[refer]', '/reconnection/:refer', { refer: ParamValue<true> }, { refer: ParamValue<false> }>,
     '/scanner': RouteRecordInfo<'/scanner', '/scanner', Record<never, never>, Record<never, never>>,
   }
 
@@ -40,6 +41,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/device-info.vue': {
       routes: '/device-info'
+      views: never
+    }
+    'src/pages/reconnection/[refer].vue': {
+      routes: '/reconnection/[refer]'
       views: never
     }
     'src/pages/scanner.vue': {

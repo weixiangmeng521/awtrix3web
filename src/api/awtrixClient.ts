@@ -22,6 +22,21 @@ export default class AwtrixClient {
         return data;
     }
 
+
+    /**
+     * List of all transition effects
+     */
+    async getTransitionEffectList(){
+        const response = await fetch(`http://${this.deviceIP}/api/transitions`, {
+            method: 'GET',
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    }
+
     /**
      * get Awtrix Device Info
      * @returns 
@@ -171,6 +186,28 @@ export default class AwtrixClient {
         return data;
     }
 
+    /**
+     * 	Choose between app transition effects.
+     */
+    async setTransitionEffect(value: number) {
+        const payload = {
+            TEFF: value,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }
+
+
 
     /**
     * Switch to Specific App
@@ -208,11 +245,9 @@ export default class AwtrixClient {
             },
             body: JSON.stringify(payload)
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         return await response.text();
     }
 
@@ -249,5 +284,61 @@ export default class AwtrixClient {
     async setMATP_APPState(state: boolean) {
         return this.setNativeAppState("MATP", state);
     }
+
+    /**
+    * reboot device
+    */
+    async reboot() {
+        const response = await fetch(`http://${this.deviceIP}/api/reboot`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    }
+
+    /**
+     * wait device reconnection.
+     */
+    async requestUntilSuccess() {
+        const request = async (maxWait = 3000) => {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), maxWait);
+            try {
+                const response = await fetch(`http://${this.deviceIP}/api/stats`, {
+                    method: 'GET',
+                    signal: controller.signal,
+                });
+
+                clearTimeout(timeout);
+
+                if (!response.ok) {
+                    return void 0;
+                }
+
+                return await response.json();
+            } catch (err) {
+                // 超时或网络错误都会进入这里
+                return void 0;
+            }
+        };
+
+        while (true) {
+            const res = await request(1000);
+            if (!res) {
+                await new Promise(r => setTimeout(() => r(void 0), 100));
+                console.log("Reconnect...");
+                continue;
+            }
+            console.log("Connected...");
+            return
+        }
+    }
+
 
 }

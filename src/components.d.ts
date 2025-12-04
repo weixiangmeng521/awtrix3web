@@ -18,6 +18,7 @@ declare module 'vue' {
     CAppSelection: typeof import('./components/CAppSelection.vue')['default']
     CAppSelectPlane: typeof import('./components/CAppSelectPlane.vue')['default']
     CLink: typeof import('./components/CLink.vue')['default']
+    CPullDown: typeof import('./components/CPullDown.vue')['default']
     CSlider: typeof import('./components/CSlider.vue')['default']
     CSwitch: typeof import('./components/CSwitch.vue')['default']
     CustomATag: typeof import('./components/CustomATag.vue')['default']

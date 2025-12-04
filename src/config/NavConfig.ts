@@ -13,7 +13,7 @@ const navList = [
     {
         name: "Device Scanner",
         link: "/scanner",
-        icon: "mdi-memory"
+        icon: "mdi-home-search-outline"
     },
     {
         name: "Device Info",

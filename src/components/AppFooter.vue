@@ -1,15 +1,11 @@
 <template>
-  <v-footer
-    app
-    height="40"
-  >
-    
+  <v-footer app height="40" class="d-flex justify-center align-center font-weight-light">
+    &copy; {{ currentYear }} weixiangmeng521. All rights reserved.
   </v-footer>
 </template>
-
 <script setup lang="ts">
+const currentYear = new Date().getFullYear();
 </script>
-
 <style scoped lang="sass">
   .social-link :deep(.v-icon)
     color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity))

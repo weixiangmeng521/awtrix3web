@@ -18,8 +18,14 @@ export const useNotificationStore = defineStore('notification', () => {
         });
     };
 
+    const head = () => {
+        if (!queue.value.length) return;
+        return queue.value[0];
+    }
+
     return {
         queue,
         push,
+        head,
     };
 });

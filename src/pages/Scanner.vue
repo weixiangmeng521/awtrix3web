@@ -1,7 +1,7 @@
 <template>
   <AdminLayout>
     <template #main>
-      <!-- scann card -->
+      <!-- scann card begin -->
       <v-card v-show="scanState === 'idle' || scanState === 'scanning'" max-width="450"
         :title="!appStore.getConnectedDeviceIp.length ? 'Scanning Devices' : getShowingIPText()"
         :text="!appStore.getConnectedDeviceIp.length ? 'Scanning local network available devices may take a while.' : getDeviceInfo()"
@@ -35,8 +35,9 @@
           </v-row>
         </template>
       </v-card>
+      <!-- scann card end -->
 
-      <!-- device list -->
+      <!-- device list begin -->
       <v-row v-show="scanState === 'done'" class="animate__animated animate__fadeIn">
         <v-col cols="12" md="4" v-for="item in deviceList" :key="item.ip">
           <v-card :loading="item.state === 'checking'" :color="item.isAwtrixDevice ? '#4CAF50' : ''" dark>
@@ -50,10 +51,10 @@
               <v-btn v-if="!item.isAwtrixDevice" text="" variant="text" disabled></v-btn>
               <v-btn v-else text="Connect" variant="outlined" block @click="selectDevice(item)"></v-btn>
             </v-card-actions>
-
           </v-card>
         </v-col>
       </v-row>
+      <!-- device list end -->
 
     </template>
   </AdminLayout>
@@ -142,7 +143,7 @@ function closeConnection() {
 // get device info 
 function getDeviceInfo() {
   const uid = appStore.getAwtrixInfo?.uid ?? "unkown";
-  const version = appStore.getAwtrixInfo.version;
+  const version = appStore.getAwtrixInfo?.version ?? "unkown";;
   return `${uid} | v${version}`;
 }
 

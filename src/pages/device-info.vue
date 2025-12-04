@@ -6,17 +6,24 @@
           <v-col cols="12" md="4">
             <AwtrixDeviceInfo :deviceInfo="deviceInfo" />
           </v-col>
+
           <v-col cols="12" md="4">
             <AwtrixAppInfo :appInfo="appLoopInfo" :settingInfo="settingsInfo" :currentApp="deviceInfo?.app"
               :powerState="deviceInfo?.matrix ?? false" :autoBrightness="settingsInfo?.ABRI ?? false"
               :autoNextApp="settingsInfo?.ATRANS ?? false" @change-power="changePowerEvent"
+              :transitionList="transitionList"
               @change-auto-brightness="changeAutoBrightnessEvent" @change-auto-next-app="changeAutoNext2AppEvent"
-              @change-app="changeAppEvent" @onScreenBrightnessSet="changeScreenBrightnessEvent" />
+              @change-app="changeAppEvent" @onScreenBrightnessSet="changeScreenBrightnessEvent" 
+              @change-transition-effect="setTransitionEffect"
+              />
           </v-col>
+
           <v-col cols="12" md="4">
             <AwtrixNativeApp :settingInfo="settingsInfo" @changed-dat-app-state="changedDatAppStateEvent"
               @changed-hum-app-state="changedHumAppStateEvent" @changed-matp-app-state="changedMatpAppStateEvent"
-              @changed-temp-app-state="changedTempAppStateEvent" @changed-tim-app-state="changedTimAppStateEvent" />
+              @changed-temp-app-state="changedTempAppStateEvent" @changed-tim-app-state="changedTimAppStateEvent"
+              @changed-bat-app-state="changedBatAppStateEvent"
+               />
 
           </v-col>
         </v-row>
@@ -40,7 +47,36 @@ const settingsInfo = ref<AwtrixSettings>();
 const appLoopInfo = ref<AppLoopInfo>();
 const notification = useNotificationStore();
 const eventIntervalMap = ref<Map<string, number>>(new Map());
-const intervalTime = 1000;
+const intervalTime = 3000;
+const transitionList = ref<string[]>([]);
+
+
+/**
+ * get all of the transition effect list
+ */
+async function getTransitionEffectList(){
+  if (!awtrixClinet.value) return;
+  let list:string[] = [];
+  try {
+    list = await awtrixClinet.value.getTransitionEffectList();
+  } catch (e) {
+    notification.push("Awtrix connection error", 'error', intervalTime);
+  }
+  transitionList.value = list;
+}
+
+/**
+ * Choose between app transition effects.
+ */
+async function setTransitionEffect(value: number) {
+  if (!awtrixClinet.value) return;
+  try {
+    await awtrixClinet.value.setTransitionEffect(value);
+  } catch (e) {
+    notification.push("Awtrix connection error", 'error', intervalTime);
+  }
+}
+
 
 // Enable or disable the native date app (requires reboot).
 async function changedDatAppStateEvent(state: Boolean) {
@@ -50,7 +86,7 @@ async function changedDatAppStateEvent(state: Boolean) {
   } catch (e) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
-  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime * 2);
+  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime);
 }
 
 // 	Enable or disable the native humidity app (requires reboot).
@@ -61,7 +97,7 @@ async function changedHumAppStateEvent(state: Boolean) {
   } catch (e) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
-  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime * 2);
+  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime);
 }
 
 // Enable or disable the native temperature app (requires reboot).
@@ -72,7 +108,7 @@ async function changedTempAppStateEvent(state: Boolean) {
   } catch (e) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
-  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime * 2);
+  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime);
 }
 
 // 	Enable or disable the native time app (requires reboot).
@@ -83,7 +119,7 @@ async function changedTimAppStateEvent(state: Boolean) {
   } catch (e) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
-  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime * 2);
+  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime);
 }
 
 // Enable or disable the matrix. Similar to power endpoint but without the animation.
@@ -94,8 +130,21 @@ async function changedMatpAppStateEvent(state: Boolean) {
   } catch (e) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
-  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime * 2);
+  notification.push("Changing this setting requires restarting the device.", 'warning', intervalTime);
 }
+
+
+// Enable or disable the native battery app (requires reboot).
+async function changedBatAppStateEvent(state: Boolean){
+  if (!awtrixClinet.value) return;
+  try {
+    await awtrixClinet.value.setBAT_APPState(state as boolean);
+  } catch (e) {
+    notification.push("Awtrix connection error", 'error', intervalTime);
+  }
+}
+
+
 
 // change power event
 async function changePowerEvent(state: Boolean) {
@@ -148,7 +197,7 @@ async function changeScreenBrightnessEvent(value: number) {
     notification.push("Awtrix connection error", 'error', intervalTime);
   }
   if (value > 200) {
-    notification.push("Brightness above 200 is not recommended, as it may damage the LED lights.", 'warning', intervalTime * 2);
+    notification.push("Brightness above 200 is not recommended, as it may damage the LED lights.", 'warning', intervalTime);
   }
 }
 
@@ -206,8 +255,7 @@ async function intervalDeviceInfo() {
 
 onBeforeMount(async () => {
   // init
-  await fetchAwtrixDeviceInfo();
-  await fetchApiLoop();
+  await Promise.all([await fetchAwtrixDeviceInfo(), await fetchApiLoop(), await getTransitionEffectList()]);
 })
 
 
