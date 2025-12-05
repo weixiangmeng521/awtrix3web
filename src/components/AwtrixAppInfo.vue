@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto mt-10" :loading="!props.settingInfo" max-width="600">
+    <v-card class="mx-auto" :loading="!props.settingInfo" max-width="600">
         <v-card-title>Device Controller</v-card-title>
         <v-card-item v-if="props.settingInfo">
             <CAppSelection :appInfo="props.appInfo" :currentApp="props.currentApp" @change-app="changeAppEvent" />
@@ -14,9 +14,12 @@
             <v-divider></v-divider>
             <!-- divider end -->
 
-            <CSwitch :state="(props.autoNextApp ?? false)" title="Auto switch APP"
+            <CSwitch :state="(props.autoNextApp ?? false)" title="Auto transition APP"
                 @update-state="changeAutoNextAppState" />
-            <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Switch transition" @on-changed="onTransitionChangedEvent"/>
+            <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Transition effect"
+                @on-changed="onTransitionChangedEvent" />
+            <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000" placeholder="Transition time (ms)"
+                @submit="transitionTimeSubmit" />
 
             <!-- divider begin -->
             <v-divider></v-divider>
@@ -59,6 +62,7 @@ const emit = defineEmits<{
     changeAutoBrightness: [value: Boolean],
     changeAutoNextApp: [value: Boolean],
     changeTransitionEffect: [value: number],
+    changeTransitionTime: [value: number],
     onScreenBrightnessSet: [value: number],
 }>()
 
@@ -84,6 +88,10 @@ const changeAppEvent = (name: string) => {
 
 const onSlideChangeEvent = (value: Number) => {
     emit('onScreenBrightnessSet', value as number);
+}
+
+const transitionTimeSubmit = (value: Number) => {
+    emit("changeTransitionTime", value as number);
 }
 
 

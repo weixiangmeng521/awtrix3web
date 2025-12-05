@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto mt-10" :loading="!props.deviceInfo" max-width="600">
+    <v-card class="mx-auto" :loading="!props.deviceInfo">
         <v-card-item>
             <v-card-title>
                 <!-- <div :class="deviceInfo?.matrix ? 'bg-green' : 'bg-red'" class="w-3 h-3 rounded-full d-inline-block mr-1" style="width: 10px;height:10px;border-radius:100%;"></div> -->
@@ -16,7 +16,7 @@
             <v-table density="comfortable">
                 <tbody>
                     <tr>
-                        <td><strong>IP Address</strong></td>
+                        <td width="200px"><strong>IP Address</strong></td>
                         <!-- <td>{{ props.deviceInfo.ip_address }}</td> -->
                         <td><Clink :href="props.deviceInfo.ip_address">{{ props.deviceInfo.ip_address  }}</Clink></td>
                     </tr>

@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto mt-10" :loading="!props.settingInfo" max-width="600">
+    <v-card class="mx-auto" :loading="!props.settingInfo" max-width="600">
         <v-card-title>Native App</v-card-title>
         <v-card-item v-if="props.settingInfo">
 

@@ -19,7 +19,12 @@ const navList = [
         name: "Device Info",
         link: "/device-info",
         icon: "mdi-memory"
-    },    
+    },
+    {
+        name: "Device Setting",
+        link: "/device-setting",
+        icon: "mdi-cog-outline"
+    },        
 ] as NavItem[];
 
 

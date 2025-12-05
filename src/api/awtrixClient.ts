@@ -230,6 +230,29 @@ export default class AwtrixClient {
         return data;
     }
 
+
+    /**
+    * Time taken for the transition to the next app in milliseconds.
+    */
+    async setTranstionTime(time: number) {
+        const payload = {
+            TSPEED: time,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
+
     /**
      * Internal helper: enable or disable a native AWTRIX app
      */

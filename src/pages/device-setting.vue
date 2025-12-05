@@ -3,10 +3,25 @@
     <template #main>
       <v-container class="flex">
         <v-row>
-          <v-col cols="12">
-            <AwtrixDeviceInfo :deviceInfo="deviceInfo" />
+          <v-col cols="12" md="4">
+            <AwtrixAppInfo :appInfo="appLoopInfo" :settingInfo="settingsInfo" :currentApp="deviceInfo?.app"
+              :powerState="deviceInfo?.matrix ?? false" :autoBrightness="settingsInfo?.ABRI ?? false"
+              :autoNextApp="settingsInfo?.ATRANS ?? false" @change-power="changePowerEvent"
+              :transitionList="transitionList"
+              @change-auto-brightness="changeAutoBrightnessEvent" @change-auto-next-app="changeAutoNext2AppEvent"
+              @change-app="changeAppEvent" @onScreenBrightnessSet="changeScreenBrightnessEvent" 
+              @change-transition-effect="setTransitionEffect"
+              @change-transition-time="setTransitionTime"
+              />
           </v-col>
 
+          <v-col cols="12" md="4">
+            <AwtrixNativeApp :settingInfo="settingsInfo" @changed-dat-app-state="changedDatAppStateEvent"
+              @changed-hum-app-state="changedHumAppStateEvent" @changed-matp-app-state="changedMatpAppStateEvent"
+              @changed-temp-app-state="changedTempAppStateEvent" @changed-tim-app-state="changedTimAppStateEvent"
+              @changed-bat-app-state="changedBatAppStateEvent"
+               />
+          </v-col>
         </v-row>
       </v-container>
     </template>
@@ -16,6 +31,7 @@
 <script lang="ts" setup>
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import AwtrixDeviceInfo from '@/components/AwtrixDeviceInfo.vue';
+import AwtrixAppInfo from "@/components/AwtrixAppInfo.vue";
 import { useAppStore } from '@/stores/app';
 import AwtrixClient from '@/api/awtrixClient';
 import type { AppLoopInfo, AwtrixSettings, AwtrixStats } from '@/api/awtrix';
