@@ -277,6 +277,8 @@ export default class AwtrixClient {
     }    
 
 
+    
+
 
     /**
     * Scroll speed modification
@@ -299,6 +301,75 @@ export default class AwtrixClient {
         const data = await response.text();
         return data;
     }        
+
+
+    /**
+    * Display text in uppercase.
+    */
+    async setDisplayTextInUppercase(value: boolean) {
+        const payload = {
+            UPPERCASE: value,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
+
+
+    /**
+    * Duration an app is displayed in seconds.
+    */
+    async setDurationAnAppIsDisplayedInSeconds(sec: number) {
+        const payload = {
+            ATIME: sec,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
+
+
+    /**
+    * Block physical navigation keys (still sends input to MQTT).
+    */
+    async setBlockPhysicalNavigationKeys(state: Boolean) {
+        const payload = {
+            BLOCKN: state,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
 
 
     /**

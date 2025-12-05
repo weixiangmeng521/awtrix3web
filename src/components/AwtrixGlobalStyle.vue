@@ -7,14 +7,16 @@
             <v-divider></v-divider>
             <!-- divider end -->
             <CColorSelection title="Global text color" :rgbColor="props.settingInfo.TCOL" @on-color-changed="onColorChangedEvent"/>
- 
-            <!-- TODO: UPPERCASE	boolean	Display text in uppercase. -->
-
 
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
-            <CSingleNumberInput class="mt-1" :value="props.settingInfo.SSPEED" :min="1" :max="100" placeholder="Scroll Speed" @submit="onScrollSpeedModificationChangedEvent"/>
+            <CSingleNumberInput class="mt-2" :value="props.settingInfo.SSPEED" :min="1" :max="100" placeholder="Scroll Speed" @submit="onScrollSpeedModificationChangedEvent"/>
+
+            <!-- divider begin -->
+            <v-divider></v-divider>
+            <!-- divider end -->
+            <CSwitch :state="(props.settingInfo.UPPERCASE ?? false)" title="Uppercase Letters" @update-state="onUppercaseLetterSwitchChanged" />
 
 
         </v-card-item>
@@ -31,6 +33,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     "onGlobalTextColorChanged": [string],
     "onScrollSpeedModificationChanged": [number],
+    "onUppercaseLetterSwitchChanged": [boolean],
 }>()
 
 const onColorChangedEvent = (color: string) => {
@@ -39,6 +42,10 @@ const onColorChangedEvent = (color: string) => {
 
 const onScrollSpeedModificationChangedEvent = (value: Number) => {
     emit("onScrollSpeedModificationChanged", value as number);
+}
+
+const onUppercaseLetterSwitchChanged = (value: Boolean) => {
+    emit("onUppercaseLetterSwitchChanged", value as boolean);
 }
 
 </script>

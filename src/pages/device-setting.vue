@@ -10,14 +10,16 @@
                             :transitionList="transitionList" @change-auto-brightness="changeAutoBrightnessEvent"
                             @change-auto-next-app="changeAutoNext2AppEvent" @change-app="changeAppEvent"
                             @onScreenBrightnessSet="changeScreenBrightnessEvent"
-                            @change-transition-effect="setTransitionEffect"
-                            @change-transition-time="setTransitionTime" />
+                            @change-transition-effect="setTransitionEffect" @change-transition-time="setTransitionTime"
+                            @on-app-duration-time-changed="onAppDurationTimeChangedEvent"
+                            @change-block-physical-btn-state="changeBlockPhysicalBtnStateEvent" />
                     </v-col>
 
                     <v-col cols="12" md="4">
                         <AwtrixGlobalStyle :appInfo="appLoopInfo" :settingInfo="settingsInfo"
                             @on-global-text-color-changed="onGlobalTextColorChangedEvent"
-                            @on-scroll-speed-modification-changed="onScrollSpeedModificationEvent" />
+                            @on-scroll-speed-modification-changed="onScrollSpeedModificationEvent"
+                            @on-uppercase-letter-switch-changed="onUppercaseLetterSwitchChangedEvent" />
                     </v-col>
 
                     <v-col cols="12" md="4">
@@ -82,7 +84,7 @@ async function setTransitionEffect(value: number) {
 /**
  * 	Scroll speed modification.
  */
-async function onScrollSpeedModificationEvent(value: number){
+async function onScrollSpeedModificationEvent(value: number) {
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setScrollSpeedModification(value);
@@ -99,6 +101,44 @@ async function onGlobalTextColorChangedEvent(value: string) {
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setGlobalTextColor(value);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+/**
+ * Display text in uppercase.
+ */
+async function onUppercaseLetterSwitchChangedEvent(value: boolean) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setDisplayTextInUppercase(value);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+/**
+ * 	Duration an app is displayed in seconds.
+ */
+async function onAppDurationTimeChangedEvent(value: number) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setDurationAnAppIsDisplayedInSeconds(value);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+/**
+ *  Block physical navigation keys (still sends input to MQTT).
+ */
+async function changeBlockPhysicalBtnStateEvent(state: Boolean) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setBlockPhysicalNavigationKeys(state);
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }

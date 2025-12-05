@@ -1,11 +1,11 @@
 <template>
-    <v-row>
-        <v-col cols="8">
+    <v-row class="mt-0">
+        <v-col cols="8" class="pt-1 pb-1">
             <v-number-input :model-value="inputVal" :reverse="false" :max="props.max" :min="props.min" controlVariant="stacked"
                 :label="props.placeholder" :hideInput="false" :inset="false" @update:modelValue="inputChangeEvent" :disabled="lock">
             </v-number-input>
         </v-col>
-        <v-col cols="4" class="pr-4 pl-0">
+        <v-col cols="4" class="pr-4 pl-0 pt-1 pb-1">
             <v-btn @click="submitEvent" height="55px" width="100%" :loading="lock">Submit</v-btn>
         </v-col>
     </v-row>

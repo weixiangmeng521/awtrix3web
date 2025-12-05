@@ -7,20 +7,26 @@
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
-
             <CSwitch :state="(props.powerState ?? false)" title="Power" @update-state="changeState" />
+
 
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
+            <CSwitch :state="(props.settingInfo.BLOCKN ?? false)" title="Block Button" @update-state="changeBlockPhysicalBtnState" />
 
-            <CSwitch :state="(props.autoNextApp ?? false)" title="Auto transition APP"
+
+            <!-- divider begin -->
+            <v-divider></v-divider>
+            <!-- divider end -->
+            <CSwitch :state="(props.autoNextApp ?? false)" title="Auto Transition"
                 @update-state="changeAutoNextAppState" />
             <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Transition effect"
                 @on-changed="onTransitionChangedEvent" />
-            <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000" placeholder="Transition time (ms)"
-                @submit="transitionTimeSubmit" />
-
+            <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000" 
+                placeholder="Transition time (ms)" @submit="transitionTimeSubmit" />
+            <CSingleNumberInput :value="props.settingInfo.ATIME" :min="0" :max="10000" placeholder="Duration Seconds"
+                @submit="onAppDurationTimeChangedEvent" />
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
@@ -31,8 +37,6 @@
                 @update-state="changeAutoBrightnessState" />
             <CSlider :disabled="props.settingInfo.ABRI" :value="props.settingInfo.BRI ?? 0" :max="255" :min="0"
                 @onSlideChange="onSlideChangeEvent" />
-
-
 
 
 
@@ -64,6 +68,8 @@ const emit = defineEmits<{
     changeTransitionEffect: [value: number],
     changeTransitionTime: [value: number],
     onScreenBrightnessSet: [value: number],
+    onAppDurationTimeChanged: [value: number],
+    changeBlockPhysicalBtnState: [value: Boolean],
 }>()
 
 const onTransitionChangedEvent = (effectId: number) => {
@@ -94,6 +100,13 @@ const transitionTimeSubmit = (value: Number) => {
     emit("changeTransitionTime", value as number);
 }
 
+const onAppDurationTimeChangedEvent = (value: Number) => {
+    emit("onAppDurationTimeChanged", value as number);
+}
+
+const changeBlockPhysicalBtnState = (state: Boolean) => {
+    emit("changeBlockPhysicalBtnState", state);
+}
 
 </script>
 <style lang="css" scoped>

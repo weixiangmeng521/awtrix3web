@@ -70,6 +70,9 @@ export type AppLoopInfo= {
     [key:string]: number;
 }
 
+/**
+ * https://blueforcer.github.io/awtrix3/#/api?id=display-text-in-colored-fragments
+ */
 export interface AwtrixSettings {
   MATP: boolean; // ok
   ABRI: boolean; // OK
@@ -78,7 +81,7 @@ export interface AwtrixSettings {
   TCOL: number; // OK
   TEFF: number;  // OK
   TSPEED: number; // OK
-  ATIME: number;
+  ATIME: number; // OK
   TMODE: number;
   CHCOL: number;
   CTCOL: number;
@@ -87,11 +90,11 @@ export interface AwtrixSettings {
   DFORMAT: string;
   SOM: boolean;
   CEL: boolean;
-  BLOCKN: boolean;
+  BLOCKN: boolean; // ok
   MAT: number;
   SOUND: boolean;
   GAMMA: number;
-  UPPERCASE: boolean;
+  UPPERCASE: boolean; // ok
   CCORRECTION: string;
   CTEMP: string;
   WD: boolean;
