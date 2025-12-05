@@ -277,7 +277,28 @@ export default class AwtrixClient {
     }    
 
 
-    
+    /**
+    * Sets a global effect overlay (cannot be used with app specific overlays).
+    * @param key {OverlayEffects}
+    */
+    async setOverlayEffect(key: string) {
+        const payload = {
+            OVERLAY: key,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }        
+
 
 
     /**
@@ -369,6 +390,52 @@ export default class AwtrixClient {
         const data = await response.text();
         return data;
     }    
+
+
+    /**
+    * Play a RTTTL sound from a given RTTTL string:
+    */
+    async sendRTTTLSoundFromString(str: string) {
+        const payload = {
+            rttl: str,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/rtttl`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
+
+
+    /**
+    * Play a RTTTL sound from the MELODIES folder. If you're using a DFplayer, use the /sound API and enter the 4 digit number of your MP3.
+    */
+    async sendPlaySound(soundName: string) {
+        const payload = {
+            "sound": soundName,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/sound`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
 
 
 

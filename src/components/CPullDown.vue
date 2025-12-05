@@ -1,23 +1,16 @@
 <template>
-    <v-combobox v-if="!lock" :label="props.placeHolder" v-model="selected" :items="props.list ?? []"
-        @update:model-value="onChanged"></v-combobox>
-    <v-progress-circular v-if="lock" :indeterminate="lock" class="ms-2 mb-4" size="24"></v-progress-circular>
+    <div>
+        <v-combobox v-if="!lock" :label="props.placeHolder" v-model="selected" :items="props.list ?? []"
+            @update:model-value="onChanged"></v-combobox>
+        <v-progress-circular v-if="lock" :indeterminate="lock" class="ms-2 mb-4 mt-4" size="24"></v-progress-circular>
+    </div>
 </template>
 <script lang="ts" setup>
-const props = defineProps({
-    list: {
-        type: Array<String>,
-        require: true,
-    },
-    selected: {
-        type: Number,
-        require: true,
-    },
-    placeHolder: {
-        type: String,
-        require: false,
-    }
-})
+const props = defineProps<{
+    list: string[],
+    selected: number,
+    placeHolder: string,
+}>()
 
 const emit = defineEmits<{
     "onChanged": [number],
@@ -39,14 +32,14 @@ const getIndex = (cur: string) => {
     return index;
 }
 
-const onChanged = (changedOption:string) => {
-    if (lock.value) return;    
+const onChanged = (changedOption: string) => {
+    if (lock.value) return;
     const list = props.list ?? [];
     const index = getIndex(changedOption);
     const curSelect = (list[index]) as string;
     selected.value = curSelect;
     emit("onChanged", index);
-    lock.value = true;    
+    lock.value = true;
 }
 
 onMounted(() => {

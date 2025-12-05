@@ -19,7 +19,9 @@
                         <AwtrixGlobalStyle :appInfo="appLoopInfo" :settingInfo="settingsInfo"
                             @on-global-text-color-changed="onGlobalTextColorChangedEvent"
                             @on-scroll-speed-modification-changed="onScrollSpeedModificationEvent"
-                            @on-uppercase-letter-switch-changed="onUppercaseLetterSwitchChangedEvent" />
+                            @on-uppercase-letter-switch-changed="onUppercaseLetterSwitchChangedEvent" 
+                            @on-effect-overlay-changed="onEffectOverlayChangedEvent"
+                            />
                     </v-col>
 
                     <v-col cols="12" md="4">
@@ -88,6 +90,19 @@ async function onScrollSpeedModificationEvent(value: number) {
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setScrollSpeedModification(value);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+/**
+ * Sets a global effect overlay (cannot be used with app specific overlays).
+ */
+async function onEffectOverlayChangedEvent(key:string) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setOverlayEffect(key);
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }

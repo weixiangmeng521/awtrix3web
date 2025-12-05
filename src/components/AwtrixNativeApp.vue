@@ -122,6 +122,7 @@ const emit = defineEmits<{
 }>()
 
 const TMODE_MAPPING = [
+    { mode: 0, img: new URL("@/assets/native_app/time/0.png", import.meta.url).href },
     { mode: 1, img: new URL("@/assets/native_app/time/1.png", import.meta.url).href },
     { mode: 2, img: new URL("@/assets/native_app/time/2.png", import.meta.url).href },
     { mode: 3, img: new URL("@/assets/native_app/time/3.png", import.meta.url).href },

@@ -25,7 +25,7 @@
                 @on-changed="onTransitionChangedEvent" />
             <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000" 
                 placeholder="Transition time (ms)" @submit="transitionTimeSubmit" />
-            <CSingleNumberInput :value="props.settingInfo.ATIME" :min="0" :max="10000" placeholder="Duration Seconds"
+            <CSingleNumberInput :value="props.settingInfo.ATIME" :min="0" :max="10000" placeholder="App Duration Seconds"
                 @submit="onAppDurationTimeChangedEvent" />
             <!-- divider begin -->
             <v-divider></v-divider>
@@ -72,8 +72,8 @@ const emit = defineEmits<{
     changeBlockPhysicalBtnState: [value: Boolean],
 }>()
 
-const onTransitionChangedEvent = (effectId: number) => {
-    emit("changeTransitionEffect", effectId);
+const onTransitionChangedEvent = (effectId: number | string) => {
+    emit("changeTransitionEffect", Number(effectId));
 }
 
 const changeState = (val: Boolean) => {
