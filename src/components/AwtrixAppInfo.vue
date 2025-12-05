@@ -1,6 +1,6 @@
 <template>
     <v-card class="mx-auto" :loading="!props.settingInfo" max-width="600">
-        <v-card-title>Device Controller</v-card-title>
+        <v-card-title>General</v-card-title>
         <v-card-item v-if="props.settingInfo">
             <CAppSelection :appInfo="props.appInfo" :currentApp="props.currentApp" @change-app="changeAppEvent" />
 

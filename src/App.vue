@@ -31,13 +31,14 @@
     </v-dialog>
     <!-- modal end -->
     
+    <ColorPickerModal/>
   </v-app>
 </template>
 
 <script lang="ts" setup>
+import ColorPickerModal from './components/modals/ColorPickerModal.vue';
 import { useModal } from './hooks/useModal';
 import { useNotificationStore } from './hooks/useNotificationStore';
-
 const notification = useNotificationStore();
 const modal = useModal();
 </script>

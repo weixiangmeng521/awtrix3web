@@ -75,8 +75,7 @@ export interface AwtrixSettings {
   ABRI: boolean; // OK
   BRI: number; // OK
   ATRANS: boolean; // OK
-  /** Global text color. */
-  TCOL: number;
+  TCOL: number; // OK
   TEFF: number;  // OK
   TSPEED: number; // OK
   ATIME: number;
@@ -103,7 +102,7 @@ export interface AwtrixSettings {
   HUM_COL: number;
   TEMP_COL: number;
   BAT_COL: number;
-  SSPEED: number;
+  SSPEED: number; // OK
   TIM: boolean; // OK
   DAT: boolean; // OK
   HUM: boolean; // OK

@@ -49,6 +49,7 @@ const emit = defineEmits<{
 
 const submitEvent = () => {
     if(lock.value) return;
+    if(inputVal.value === props.value) return;
     emit("submit", inputVal.value)
     lock.value = true;
 }

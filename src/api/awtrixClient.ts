@@ -253,6 +253,54 @@ export default class AwtrixClient {
     }    
 
 
+
+    /**
+    * Global text color.
+    * @param color	RGB array or hex color
+    */
+    async setGlobalTextColor(color: string | number) {
+        const payload = {
+            TCOL: color,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }    
+
+
+
+    /**
+    * Scroll speed modification
+    * @param num 0-100%
+    */
+    async setScrollSpeedModification(num: number) {
+        const payload = {
+            SSPEED: num,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text();
+        return data;
+    }        
+
+
     /**
      * Internal helper: enable or disable a native AWTRIX app
      */
