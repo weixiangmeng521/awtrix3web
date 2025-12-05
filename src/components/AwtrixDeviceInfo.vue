@@ -7,8 +7,8 @@
                 Device Info
             </v-card-title>
             <v-card-subtitle>
-                UID: {{ props.deviceInfo?.uid ? props.deviceInfo?.uid : "unknown"}} | {{
-                    props.deviceInfo?.version ? "v" + props.deviceInfo?.version:  "unknwon" }}
+                UID: {{ props.deviceInfo?.uid ? props.deviceInfo?.uid : "unknown" }} | {{
+                    props.deviceInfo?.version ? "v" + props.deviceInfo?.version : "unknwon" }}
             </v-card-subtitle>
         </v-card-item>
 
@@ -18,7 +18,9 @@
                     <tr>
                         <td width="200px"><strong>IP Address</strong></td>
                         <!-- <td>{{ props.deviceInfo.ip_address }}</td> -->
-                        <td><Clink :href="props.deviceInfo.ip_address">{{ props.deviceInfo.ip_address  }}</Clink></td>
+                        <td>
+                            <Clink :href="props.deviceInfo.ip_address">{{ props.deviceInfo.ip_address }}</Clink>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>WiFi Signal</strong></td>
@@ -30,7 +32,10 @@
                     </tr>
                     <tr>
                         <td><strong>Battery | Raw</strong></td>
-                        <td>{{ props.deviceInfo.bat }}% | {{ props.deviceInfo.bat_raw }}</td>
+                        <td>
+                            <CBattery :value="props.deviceInfo.bat" class="mr-1" />
+                            {{ props.deviceInfo.bat }}% | {{ props.deviceInfo.bat_raw }}
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Current App</strong></td>
@@ -86,11 +91,18 @@ function formatRam(kb: number) {
     return (kb / 1024).toFixed(1) + ' MB';
 }
 
-function formatUptime(seconds: number) {
+function formatUptime(seconds: number): string {
+    if (seconds < 60) return `${seconds}s`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+    if (seconds < 86400)
+        return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`;
     const d = Math.floor(seconds / 86400);
     const h = Math.floor((seconds % 86400) / 3600);
     const m = Math.floor((seconds % 3600) / 60);
-    return `${d}d, ${h}h, ${m}m`;
+    let result = `${d}d`;
+    if (h > 0) result += ` ${h}h`;
+    if (m > 0) result += ` ${m}m`;
+    return result;
 }
 
 </script>

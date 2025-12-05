@@ -17,6 +17,7 @@ declare module 'vue' {
     AwtrixNativeApp: typeof import('./components/AwtrixNativeApp.vue')['default']
     CAppSelection: typeof import('./components/CAppSelection.vue')['default']
     CAppSelectPlane: typeof import('./components/CAppSelectPlane.vue')['default']
+    CBattery: typeof import('./components/CBattery.vue')['default']
     CLink: typeof import('./components/CLink.vue')['default']
     CPullDown: typeof import('./components/CPullDown.vue')['default']
     CSingleInput: typeof import('./components/CSingleInput.vue')['default']
