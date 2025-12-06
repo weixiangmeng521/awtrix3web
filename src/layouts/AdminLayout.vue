@@ -3,7 +3,7 @@
         <v-layout class="rounded rounded-md border main">
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
             <v-app-bar class="px-3" style="position: fixed;">
-                <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon @click.prevent="toggleDrawer"></v-app-bar-nav-icon>
                 <img src="@/assets/awtrix-logo.png" alt="Awtrix Logo" height="32"
                     :class="!isConnected ? 'grayscale ml-3' : 'ml-3'" />
                 <p class="font-weight-bold ml-3">
@@ -11,16 +11,36 @@
                 </p>
                 <v-spacer></v-spacer>
                 <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-                    :text="theme === 'light' ? 'Sun' : 'Mon'" slim @click="onChangeTheme"></v-btn>
+                    :text="theme === 'light' ? 'Sun' : 'Mon'" slim @click.prevent="onChangeTheme"></v-btn>
             </v-app-bar>
 
             <v-navigation-drawer permanent v-model="shouldOpenDrawer" style="position: fixed;">
-                <v-list nav>
-                    <v-list-item v-for="item in navList" :key="item.link" :title="item.name" @click="nav2(item.link)">
-                        <template v-slot:prepend>
-                            <v-icon :icon="item.icon"></v-icon>
-                        </template>
-                    </v-list-item>
+                <v-list nav class="navigation" v-model:opened="navOpen">
+                    <div v-for="item in navList">
+                        <v-list-item v-if="!item.children.length" :key="item.link" :title="item.name"
+                            @click.prevent="nav2(item.link)">
+                            <template v-slot:prepend>
+                                <v-icon :icon="item.icon"></v-icon>
+                            </template>
+                        </v-list-item>
+                        <v-list-group v-else :value="item.name">
+                            <template v-slot:activator="{ props }">
+                                <v-list-item v-bind="props" :title="item.name">
+                                    <template v-slot:prepend>
+                                        <v-icon :icon="item.icon"></v-icon>
+                                    </template>     
+                                </v-list-item>
+                            </template>
+
+                            <v-list-item v-for="(childItem, i) in item.children" :key="i" 
+                                :title="childItem.name" 
+                                @click.prevent="nav2(childItem.link)">
+                                <template v-slot:prepend>
+                                    <v-icon :icon="childItem.icon"></v-icon>
+                                </template>                                
+                            </v-list-item>
+                        </v-list-group>
+                    </div>
                 </v-list>
 
                 <template v-slot:append>
@@ -62,6 +82,7 @@ const DO_NOT_SHOW_REBOOT_BTN_NAV_LIST = [
     "/reconnection/[refer]",
 ];
 
+const navOpen = ref(['Device Setting'])
 
 // changec theme
 function onChangeTheme() {
@@ -83,7 +104,7 @@ function onWindowsChangedEvent() {
     shouldOpenDrawer.value = width >= 1200;
 }
 
-function shouldShodRebootBtn(){
+function shouldShodRebootBtn() {
     const name = route.name;
     return !DO_NOT_SHOW_REBOOT_BTN_NAV_LIST.includes(name);
 }
@@ -118,5 +139,13 @@ onUnmounted(() => {
 .grayscale {
     filter: grayscale(100%);
     transition: .3s;
+}
+
+.navigation :deep(.v-list-item__spacer){
+   width:15px!important; 
+}
+
+.navigation :deep(.v-list-group__items .v-list-item){
+    padding-inline-start: calc(var(--indent-padding) - 16px) !important
 }
 </style>

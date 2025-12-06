@@ -6,22 +6,21 @@
                     <v-col cols="12" md="4">
                         <AwtrixAppInfo :appInfo="appLoopInfo" :settingInfo="settingsInfo" :currentApp="deviceInfo?.app"
                             :powerState="deviceInfo?.matrix ?? false" :autoBrightness="settingsInfo?.ABRI ?? false"
-                            :autoNextApp="settingsInfo?.ATRANS ?? false" @change-power="changePowerEvent"
-                            :transitionList="transitionList" @change-auto-brightness="changeAutoBrightnessEvent"
-                            @change-auto-next-app="changeAutoNext2AppEvent" @change-app="changeAppEvent"
-                            @onScreenBrightnessSet="changeScreenBrightnessEvent"
-                            @change-transition-effect="setTransitionEffect" @change-transition-time="setTransitionTime"
-                            @on-app-duration-time-changed="onAppDurationTimeChangedEvent"
+                            @change-power="changePowerEvent" @change-auto-brightness="changeAutoBrightnessEvent"
+                            @change-app="changeAppEvent" @onScreenBrightnessSet="changeScreenBrightnessEvent"
                             @change-block-physical-btn-state="changeBlockPhysicalBtnStateEvent" />
                     </v-col>
 
                     <v-col cols="12" md="4">
                         <AwtrixGlobalStyle :appInfo="appLoopInfo" :settingInfo="settingsInfo"
+                            :transitionList="transitionList" :autoNextApp="settingsInfo?.ATRANS ?? false"
                             @on-global-text-color-changed="onGlobalTextColorChangedEvent"
+                            @change-auto-next-app="changeAutoNext2AppEvent"
                             @on-scroll-speed-modification-changed="onScrollSpeedModificationEvent"
-                            @on-uppercase-letter-switch-changed="onUppercaseLetterSwitchChangedEvent" 
+                            @on-uppercase-letter-switch-changed="onUppercaseLetterSwitchChangedEvent"
                             @on-effect-overlay-changed="onEffectOverlayChangedEvent"
-                            />
+                            @change-transition-effect="setTransitionEffect" @change-transition-time="setTransitionTime"
+                            @on-app-duration-time-changed="onAppDurationTimeChangedEvent" />
                     </v-col>
 
                     <v-col cols="12" md="4">
@@ -99,7 +98,7 @@ async function onScrollSpeedModificationEvent(value: number) {
 /**
  * Sets a global effect overlay (cannot be used with app specific overlays).
  */
-async function onEffectOverlayChangedEvent(key:string) {
+async function onEffectOverlayChangedEvent(key: string) {
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setOverlayEffect(key);

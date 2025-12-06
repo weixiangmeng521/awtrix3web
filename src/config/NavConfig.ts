@@ -1,4 +1,18 @@
+import { useAppStore } from "@/stores/app";
 import type { IconValue } from "vuetify/lib/composables/icons.mjs";
+
+
+// should check events mapper list
+const CheckerEventsMapper:{[key:string]:(...args:unknown[]) => string | undefined} = {
+    DEVICE_CONNECTION: () => {
+        const appStore = useAppStore();
+        if(!appStore.getConnectedDeviceIp){
+            return "Please establish a connection to a device first.";
+        }
+        return void 0;
+    }
+}
+
 
 /**
  * Navigation list
@@ -8,30 +22,55 @@ const navList = [
     {
         name: "Home",
         link: "/",
-        icon: "mdi-home"
-    },    
+        icon: "mdi-home",
+        children: [],
+    },
     {
         name: "Device Scanner",
         link: "/scanner",
-        icon: "mdi-home-search-outline"
+        icon: "mdi-home-search-outline",
+        children: [],
     },
     {
         name: "Device Info",
         link: "/device-info",
-        icon: "mdi-memory"
+        check: ["DEVICE_CONNECTION"],
+        icon: "mdi-memory",
+        children: [],
     },
     {
         name: "Device Setting",
-        link: "/device-setting",
-        icon: "mdi-cog-outline"
-    },        
+        check: ["DEVICE_CONNECTION"],
+        icon: "mdi-cog-outline",
+        children: [
+            {
+                name: "General",
+                link: "/device-setting",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-tune-vertical-variant"
+            },
+        ],
+    },
 ] as NavItem[];
+
+
+// get matched event callback
+export const getMatchedEventCallback = (eventName: string) => {
+    for (const key in CheckerEventsMapper) {
+        if (key === eventName) {
+            return CheckerEventsMapper[key];
+        }
+    }
+    return void 0;
+}
 
 
 export interface NavItem {
     name: string,
     link: string,
-    icon?: IconValue
+    icon?: IconValue,
+    check?: string[]
+    children: NavItem[],
 }
 
 export default navList;

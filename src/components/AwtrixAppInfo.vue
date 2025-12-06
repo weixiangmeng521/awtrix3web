@@ -16,22 +16,6 @@
             <CSwitch :state="(props.settingInfo.BLOCKN ?? false)" title="Block Button" @update-state="changeBlockPhysicalBtnState" />
 
 
-            <!-- divider begin -->
-            <v-divider></v-divider>
-            <!-- divider end -->
-            <CSwitch :state="(props.autoNextApp ?? false)" title="Auto Transition"
-                @update-state="changeAutoNextAppState" />
-            <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Transition effect"
-                @on-changed="onTransitionChangedEvent" />
-            <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000" 
-                placeholder="Transition time (ms)" @submit="transitionTimeSubmit" />
-            <CSingleNumberInput :value="props.settingInfo.ATIME" :min="0" :max="10000" placeholder="App Duration Seconds"
-                @submit="onAppDurationTimeChangedEvent" />
-            <!-- divider begin -->
-            <v-divider></v-divider>
-            <!-- divider end -->
-
-
             <CSwitch class="mr-8" :state="(props.autoBrightness ?? false)"
                 :title="(props.autoBrightness ?? false) ? 'Auto Brightness' : 'Manual Brightness'"
                 @update-state="changeAutoBrightnessState" />
@@ -47,7 +31,6 @@
 import type { AppLoopInfo, AwtrixSettings } from "@/api/awtrix.d"
 import CSwitch from "./CSwitch.vue";
 import CAppSelection from "./CAppSelection.vue"
-// @ts-ignore
 import CSlider from "./CSlider.vue";
 
 const props = defineProps<{
@@ -56,8 +39,6 @@ const props = defineProps<{
     currentApp: string | undefined,
     powerState: boolean,
     autoBrightness: boolean,
-    autoNextApp: boolean,
-    transitionList: string[],
 }>();
 
 const emit = defineEmits<{
@@ -65,16 +46,10 @@ const emit = defineEmits<{
     changePower: [value: Boolean],
     changeAutoBrightness: [value: Boolean],
     changeAutoNextApp: [value: Boolean],
-    changeTransitionEffect: [value: number],
-    changeTransitionTime: [value: number],
     onScreenBrightnessSet: [value: number],
     onAppDurationTimeChanged: [value: number],
     changeBlockPhysicalBtnState: [value: Boolean],
 }>()
-
-const onTransitionChangedEvent = (effectId: number | string) => {
-    emit("changeTransitionEffect", Number(effectId));
-}
 
 const changeState = (val: Boolean) => {
     emit('changePower', val)
@@ -82,10 +57,6 @@ const changeState = (val: Boolean) => {
 
 const changeAutoBrightnessState = (val: Boolean) => {
     emit('changeAutoBrightness', val)
-}
-
-const changeAutoNextAppState = (val: Boolean) => {
-    emit('changeAutoNextApp', val)
 }
 
 const changeAppEvent = (name: string) => {
@@ -96,13 +67,6 @@ const onSlideChangeEvent = (value: Number) => {
     emit('onScreenBrightnessSet', value as number);
 }
 
-const transitionTimeSubmit = (value: Number) => {
-    emit("changeTransitionTime", value as number);
-}
-
-const onAppDurationTimeChangedEvent = (value: Number) => {
-    emit("onAppDurationTimeChanged", value as number);
-}
 
 const changeBlockPhysicalBtnState = (state: Boolean) => {
     emit("changeBlockPhysicalBtnState", state);
