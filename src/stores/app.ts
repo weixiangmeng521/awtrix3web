@@ -28,15 +28,21 @@ function setData2LocalStoraget(that: any, key: string, data: unknown) {
   window.localStorage.setItem(key, JSON.stringify(data));
 }
 
+// theme type
+type SystemThemeType = 'dark' | 'light';
 
 
 export const useAppStore = defineStore('app', {
   state: () => ({
+    theme: 'light' as SystemThemeType,
     connectedDeviceIp: '',
     awtrixInfo: null as null | AwtrixStats,
     awtrixSettings: null as null | AwtrixSettings,
   }),
   getters: {
+    getSystemTheme: (state) => {
+      return loadDataBoforeCheckLocalStorage<string>('theme', state);
+    },
     getConnectedDeviceIp: (state) => {
       return loadDataBoforeCheckLocalStorage<string>('connectedDeviceIp', state);
     },
@@ -56,6 +62,9 @@ export const useAppStore = defineStore('app', {
     },
     setAwtrixSettings(info: AwtrixSettings) {
       setData2LocalStoraget(this, "awtrixSettings", info)
+    },
+    setSystemTheme(theme: SystemThemeType){
+      setData2LocalStoraget(this, 'theme', theme)
     },
     clearAll() {
       window.localStorage.clear();

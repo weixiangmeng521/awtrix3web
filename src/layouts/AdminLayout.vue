@@ -1,5 +1,5 @@
 <template>
-    <v-app :theme="theme">
+    <v-app :theme="appStore.getSystemTheme">
         <v-layout class="rounded rounded-md border main">
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
             <v-app-bar class="px-3" style="position: fixed;">
@@ -10,8 +10,8 @@
                     Awtrix3
                 </p>
                 <v-spacer></v-spacer>
-                <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-                    :text="theme === 'light' ? 'Sun' : 'Mon'" slim @click.prevent="onChangeTheme"></v-btn>
+                <v-btn :prepend-icon="appStore.getSystemTheme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+                    :text="appStore.getSystemTheme === 'light' ? 'Sun' : 'Mon'" slim @click.prevent="onChangeTheme"></v-btn>
             </v-app-bar>
 
             <v-navigation-drawer permanent v-model="shouldOpenDrawer" style="position: fixed;">
@@ -28,16 +28,15 @@
                                 <v-list-item v-bind="props" :title="item.name">
                                     <template v-slot:prepend>
                                         <v-icon :icon="item.icon"></v-icon>
-                                    </template>     
+                                    </template>
                                 </v-list-item>
                             </template>
 
-                            <v-list-item v-for="(childItem, i) in item.children" :key="i" 
-                                :title="childItem.name" 
+                            <v-list-item v-for="(childItem, i) in item.children" :key="i" :title="childItem.name"
                                 @click.prevent="nav2(childItem.link)">
                                 <template v-slot:prepend>
                                     <v-icon :icon="childItem.icon"></v-icon>
-                                </template>                                
+                                </template>
                             </v-list-item>
                         </v-list-group>
                     </div>
@@ -73,20 +72,23 @@ import { useAppStore } from "@/stores/app";
 import { encodeBase64 } from "@/utils/base64";
 const router = useRouter()
 const route = useRoute()
-const theme = ref('light')
 const shouldOpenDrawer = ref(false)
 const { isConnected } = useWebSocket();
 const awtrixClinet = ref<AwtrixClient>();
 const appStore = useAppStore();
+
+
 const DO_NOT_SHOW_REBOOT_BTN_NAV_LIST = [
     "/reconnection/[refer]",
 ];
 
 const navOpen = ref(['Device Setting'])
 
+
 // changec theme
 function onChangeTheme() {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
+    const curTheme = appStore.getSystemTheme === 'light' ? 'dark' : 'light';
+    appStore.setSystemTheme(curTheme);
 }
 
 // navgation to
@@ -141,11 +143,11 @@ onUnmounted(() => {
     transition: .3s;
 }
 
-.navigation :deep(.v-list-item__spacer){
-   width:15px!important; 
+.navigation :deep(.v-list-item__spacer) {
+    width: 15px !important;
 }
 
-.navigation :deep(.v-list-group__items .v-list-item){
+.navigation :deep(.v-list-group__items .v-list-item) {
     padding-inline-start: calc(var(--indent-padding) - 16px) !important
 }
 </style>

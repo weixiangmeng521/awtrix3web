@@ -4,7 +4,7 @@
             <v-card-title>
                 <!-- <div :class="deviceInfo?.matrix ? 'bg-green' : 'bg-red'" class="w-3 h-3 rounded-full d-inline-block mr-1" style="width: 10px;height:10px;border-radius:100%;"></div> -->
                 <WifiIcon :value="props.deviceInfo?.wifi_signal" class="wifi-icon" />
-                Device Info
+                Device Information
             </v-card-title>
             <v-card-subtitle>
                 UID: {{ props.deviceInfo?.uid ? props.deviceInfo?.uid : "unknown" }} | {{

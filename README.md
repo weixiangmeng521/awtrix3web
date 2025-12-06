@@ -1,4 +1,4 @@
 ###
 
 TODO 
-reboot reconnection
+error page
