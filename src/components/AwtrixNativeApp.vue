@@ -107,6 +107,7 @@
 </template>
 <script lang="ts" setup>
 import type { AwtrixSettings } from '@/api/awtrix';
+import TMODE_MAPPING from '@/config/TimeMode';
 
 const props = defineProps<{
     settingInfo: AwtrixSettings | undefined,
@@ -121,15 +122,6 @@ const emit = defineEmits<{
     changedBatAppState: [value: Boolean],
 }>()
 
-const TMODE_MAPPING = [
-    { mode: 0, img: new URL("@/assets/native_app/time/0.png", import.meta.url).href },
-    { mode: 1, img: new URL("@/assets/native_app/time/1.png", import.meta.url).href },
-    { mode: 2, img: new URL("@/assets/native_app/time/2.png", import.meta.url).href },
-    { mode: 3, img: new URL("@/assets/native_app/time/3.png", import.meta.url).href },
-    { mode: 4, img: new URL("@/assets/native_app/time/4.png", import.meta.url).href },
-    { mode: 5, img: new URL("@/assets/native_app/time/5.png", import.meta.url).href },
-    { mode: 6, img: new URL("@/assets/native_app/time/6.png", import.meta.url).href },
-]
 
 const getTmodeMappingImg = (tmode: number) => {
     for (let i = 0; i < TMODE_MAPPING.length; i++) {

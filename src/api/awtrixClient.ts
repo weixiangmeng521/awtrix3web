@@ -437,8 +437,6 @@ export default class AwtrixClient {
     }    
 
 
-
-
     /**
      * Internal helper: enable or disable a native AWTRIX app
      */
@@ -459,6 +457,29 @@ export default class AwtrixClient {
         }
         return await response.text();
     }
+
+
+
+    /**
+     * Changes the time app style.
+     */
+    async seTimeMode(mode: number) {
+        const payload = {
+            TMODE: mode,
+        }
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.text();
+    }
+
 
     /* ------------------------------
        Native App Toggles (Require Reboot)

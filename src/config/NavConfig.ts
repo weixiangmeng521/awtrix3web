@@ -49,6 +49,12 @@ const navList = [
                 check: ["DEVICE_CONNECTION"],
                 icon: "mdi-tune-vertical-variant"
             },
+            {
+                name: "TIME APP",
+                link: "/settings/time-app",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-clock-time-eight-outline"
+            },            
         ],
     },
 ] as NavItem[];

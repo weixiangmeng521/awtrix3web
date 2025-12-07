@@ -92,8 +92,8 @@ async function fetchAwtrixDeviceSettings() {
 
 async function intervalDeviceInfo() {
   await Promise.all([
-    fetchAwtrixDeviceInfo(),
-    fetchAwtrixDeviceSettings(),
+    await fetchAwtrixDeviceInfo(),
+    await fetchAwtrixDeviceSettings(),
   ])
 }
 

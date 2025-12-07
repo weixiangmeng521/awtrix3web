@@ -23,6 +23,7 @@ declare module 'vue-router/auto-routes' {
     '/device-setting': RouteRecordInfo<'/device-setting', '/device-setting', Record<never, never>, Record<never, never>>,
     '/reconnection/[refer]': RouteRecordInfo<'/reconnection/[refer]', '/reconnection/:refer', { refer: ParamValue<true> }, { refer: ParamValue<false> }>,
     '/scanner': RouteRecordInfo<'/scanner', '/scanner', Record<never, never>, Record<never, never>>,
+    '/settings/time-app': RouteRecordInfo<'/settings/time-app', '/settings/time-app', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -54,6 +55,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/scanner.vue': {
       routes: '/scanner'
+      views: never
+    }
+    'src/pages/settings/time-app.vue': {
+      routes: '/settings/time-app'
       views: never
     }
   }

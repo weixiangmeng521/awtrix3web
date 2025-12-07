@@ -101,7 +101,7 @@ export interface AwtrixSettings {
   TSPEED: number; // OK
   ATIME: number; // OK
   /** Changes the time app style. */
-  TMODE: number;
+  TMODE: number; // OK
   /** Calendar header color of the time app. */
   CHCOL: number;
   /** Calendar text color in the time app. */
