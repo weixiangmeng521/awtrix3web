@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 const props = defineProps<{
-    list: string[],
+    list: Readonly<string[]> | string[],
     selected: number,
     placeHolder: string,
 }>()

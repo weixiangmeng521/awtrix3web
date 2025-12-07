@@ -10,6 +10,15 @@
  * %l:%M %p	1:30 PM	12-hour time with AM/PM indicator
  * %l %M %p	1:30 PM	12-hour time with blinking colon and AM/PM
  */
+export const AvailableTimeFormatsList = ["%H:%M:%S",
+  "%l:%M:%S",
+  "%H:%M",
+  "%H %M",
+  "%l:%M",
+  "%l %M",
+  "%l:%M %p",
+  "%l %M %p"] as const;
+
 export type AvailableTimeFormats =
   | "%H:%M:%S"
   | "%l:%M:%S"
@@ -100,16 +109,11 @@ export interface AwtrixSettings {
   TEFF: number;  // OK
   TSPEED: number; // OK
   ATIME: number; // OK
-  /** Changes the time app style. */
   TMODE: number; // OK
-  /** Calendar header color of the time app. */
-  CHCOL: number;
-  /** Calendar text color in the time app. */
-  CTCOL: number;
-  /** Calendar body color of the time app. */
-  CBCOL: number;
-  /** Time format for the TimeApp. */
-  TFORMAT: string;
+  CHCOL: number; // OK
+  CTCOL: number; // OK
+  CBCOL: number; // OK
+  TFORMAT: string; // OK
   /** Date format for the DateApp. */
   DFORMAT: string;
   /** Start the week on Monday. */

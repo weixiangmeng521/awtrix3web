@@ -23,5 +23,6 @@ const emit = defineEmits<{
 const onTimeModeChanged = (mode: number) => {
     emit("onTimeModeChanged", mode);
 }
+
 </script>
 <style lang="css" scoped></style>

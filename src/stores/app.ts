@@ -38,6 +38,7 @@ export const useAppStore = defineStore('app', {
     connectedDeviceIp: '',
     awtrixInfo: null as null | AwtrixStats,
     awtrixSettings: null as null | AwtrixSettings,
+    awtrixTransitionEffects: [] as string[],
   }),
   getters: {
     getSystemTheme: (state) => {
@@ -52,6 +53,9 @@ export const useAppStore = defineStore('app', {
     getAwtrixSettings: (state) => {
       return loadDataBoforeCheckLocalStorage<AwtrixSettings>('awtrixSettings', state);
     },
+    getAwtrixTransitionEffects: (state) => {
+      return loadDataBoforeCheckLocalStorage<string[]>('awtrixTransitionEffects', state);
+    }
   },
   actions: {
     setShouldConnectDeviceIp(ip: string) {
@@ -65,6 +69,9 @@ export const useAppStore = defineStore('app', {
     },
     setSystemTheme(theme: SystemThemeType){
       setData2LocalStoraget(this, 'theme', theme)
+    },
+    setAwtrixTransitionEffects(list:string[]){
+      setData2LocalStoraget(this, 'awtrixTransitionEffects', list)
     },
     clearAll() {
       window.localStorage.clear();

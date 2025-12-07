@@ -1,4 +1,4 @@
-import type { AppLoopInfo, AwtrixSettings, AwtrixStats } from "./awtrix";
+import type { AppLoopInfo, AvailableTimeFormat, AwtrixSettings, AwtrixStats } from "./awtrix";
 
 export default class AwtrixClient {
     private deviceIP: string;
@@ -26,7 +26,7 @@ export default class AwtrixClient {
     /**
      * List of all transition effects
      */
-    async getTransitionEffectList(){
+    async getTransitionEffectList() {
         const response = await fetch(`http://${this.deviceIP}/api/transitions`, {
             method: 'GET',
         });
@@ -144,6 +144,119 @@ export default class AwtrixClient {
     }
 
     /**
+     * set calendar header color
+     */
+    async setCalendarHeaderColor(color: number | string): Promise<string> {
+        const payload = {
+            CHCOL: color,
+        };
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.text();
+    }
+
+
+    /**
+     * Calendar body color of the time app. 
+     */
+    async setCalendarBodyColor(color: number | string): Promise<string> {
+        const payload = {
+            CBCOL: color,
+        };
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.text();
+    }    
+
+
+    /**
+     * Text color of the time app. Use 0 for global text color.
+     */
+    async setTimeColor(color: number): Promise<string> {
+        const payload = {
+            TIME_COL: color,
+        };
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.text();
+    }
+
+
+    /**
+     * Calendar text color in the time app.
+     */
+    async setCalendarTextColor(color: number | string): Promise<string> {
+        const payload = {
+            CTCOL: color,
+        };
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.text();
+    }
+
+
+    /**
+     * Time format for the TimeApp.
+     */
+    async setTimeFormat(format: AvailableTimeFormat): Promise<string> {
+        const payload = {
+            TFORMAT: format,
+        };
+        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.text();
+    }
+
+
+    /**
     * set Matrix brightness.
     */
     async setMatrixBrightness(value: number) {
@@ -250,7 +363,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
 
@@ -274,7 +387,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
     /**
@@ -297,7 +410,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }        
+    }
 
 
 
@@ -321,7 +434,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }        
+    }
 
 
     /**
@@ -343,7 +456,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
 
@@ -366,7 +479,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
 
@@ -389,7 +502,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
     /**
@@ -411,7 +524,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
 
@@ -434,7 +547,7 @@ export default class AwtrixClient {
         }
         const data = await response.text();
         return data;
-    }    
+    }
 
 
     /**

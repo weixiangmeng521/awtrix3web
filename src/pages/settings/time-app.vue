@@ -4,7 +4,16 @@
             <v-container class="flex">
                 <v-row>
                     <v-col cols="12" md="4">
-                        <AwtrixTimeAppController :settingInfo="settingsInfo" @onTimeModeChanged="onTimeModeChangedEvent"/>
+                        <AwtrixTimeAppTimeMode :settingInfo="settingsInfo"
+                            @onTimeModeChanged="onTimeModeChangedEvent" />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <AwtrixTimeAppStyle :settingInfo="settingsInfo"
+                            @onCalendarHeaderColorChanged="onCalendarHeaderColorChangedEvent"
+                            @onCalendarTextColorChanged="onCalendarTextColorChangedEvent"
+                            @onTimeAppTimeFormatChanged="onTimeAppTimeFormatChangedEvent"
+                            @onCalendarBodyColorChanged="onCalendarBodyColorChangedEvent"
+                             />
                     </v-col>
                 </v-row>
             </v-container>
@@ -16,7 +25,7 @@
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import { useAppStore } from '@/stores/app';
 import AwtrixClient from '@/api/awtrixClient';
-import type { AwtrixSettings } from '@/api/awtrix';
+import type { AvailableTimeFormat, AwtrixSettings } from '@/api/awtrix';
 import { useNotificationStore } from '@/hooks/useNotificationStore';
 const awtrixClinet = ref<AwtrixClient>();
 const appStore = useAppStore();
@@ -39,11 +48,51 @@ async function fetchAwtrixDeviceSettings() {
 }
 
 
-async function onTimeModeChangedEvent(mode:number) {
+async function onTimeModeChangedEvent(mode: number) {
     if (!awtrixClinet.value) return;
     let data;
     try {
         data = await awtrixClinet.value.seTimeMode(mode);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+async function onCalendarHeaderColorChangedEvent(color: string) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setCalendarHeaderColor(color);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+async function onCalendarTextColorChangedEvent(color: string) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setCalendarTextColor(color);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+async function onCalendarBodyColorChangedEvent(color: string) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setCalendarBodyColor(color);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+async function onTimeAppTimeFormatChangedEvent(format: AvailableTimeFormat) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setTimeFormat(format);
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }
