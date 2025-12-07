@@ -9,6 +9,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import navList, { getMatchedEventCallback, type NavItem } from '@/config/NavConfig'
+import { useNotificationStore } from '@/hooks/useNotificationStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,7 +66,8 @@ router.beforeEach((to, from, next) => {
       const errorMsg = cb();
       if (errorMsg) {
         // valid fail
-        console.log(errorMsg);
+        const notify =  useNotificationStore();
+        notify.push(errorMsg, 'warning', 3000);
         next("/");
         return;
       }

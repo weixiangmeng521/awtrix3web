@@ -29,7 +29,7 @@ function setData2LocalStoraget(that: any, key: string, data: unknown) {
 }
 
 // theme type
-type SystemThemeType = 'dark' | 'light';
+export type SystemThemeType = 'dark' | 'light';
 
 
 export const useAppStore = defineStore('app', {

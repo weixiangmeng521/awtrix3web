@@ -1,5 +1,5 @@
 <template>
-    <v-app :theme="appStore.getSystemTheme">
+    <v-app :theme="theme">
         <v-layout class="rounded rounded-md border main">
             <!-- <v-btn icon="mdi-menu"></v-btn> -->
             <v-app-bar class="px-3" style="position: fixed;">
@@ -10,8 +10,8 @@
                     Awtrix3
                 </p>
                 <v-spacer></v-spacer>
-                <v-btn :prepend-icon="appStore.getSystemTheme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-                    :text="appStore.getSystemTheme === 'light' ? 'Sun' : 'Mon'" slim @click.prevent="onChangeTheme"></v-btn>
+                <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+                    :text="theme === 'light' ? 'Sun' : 'Mon'" slim @click.prevent="onChangeTheme"></v-btn>
             </v-app-bar>
 
             <v-navigation-drawer permanent v-model="shouldOpenDrawer" style="position: fixed;">
@@ -70,13 +70,18 @@ import navList from "@/config/NavConfig"
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { useAppStore } from "@/stores/app";
 import { encodeBase64 } from "@/utils/base64";
+import type { SystemThemeType } from "@/stores/app";
 const router = useRouter()
 const route = useRoute()
 const shouldOpenDrawer = ref(false)
 const { isConnected } = useWebSocket();
 const awtrixClinet = ref<AwtrixClient>();
 const appStore = useAppStore();
+const theme = ref<SystemThemeType>('light');
 
+watch(theme, (val) => {
+    appStore.setSystemTheme(val);
+})
 
 const DO_NOT_SHOW_REBOOT_BTN_NAV_LIST = [
     "/reconnection/[refer]",
@@ -87,8 +92,8 @@ const navOpen = ref(['Device Setting'])
 
 // changec theme
 function onChangeTheme() {
-    const curTheme = appStore.getSystemTheme === 'light' ? 'dark' : 'light';
-    appStore.setSystemTheme(curTheme);
+    const curTheme = theme.value === 'light' ? 'dark' : 'light';
+    theme.value = curTheme;
 }
 
 // navgation to
