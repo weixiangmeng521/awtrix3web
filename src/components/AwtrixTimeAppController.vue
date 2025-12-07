@@ -1,6 +1,6 @@
 <template>
     <v-card class="mx-auto" :loading="!props.settingInfo">
-        <v-card-title>Mode</v-card-title>
+        <v-card-title>Display Mode</v-card-title>
         <v-card-item>
             <!-- divider begin -->
             <v-divider></v-divider>
