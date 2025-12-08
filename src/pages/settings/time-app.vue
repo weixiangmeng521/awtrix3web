@@ -13,6 +13,7 @@
                             @onCalendarTextColorChanged="onCalendarTextColorChangedEvent"
                             @onTimeAppTimeFormatChanged="onTimeAppTimeFormatChangedEvent"
                             @onCalendarBodyColorChanged="onCalendarBodyColorChangedEvent"
+                            @onAppTextColorChanged="onAppTextColorChangedEvent"
                              />
                     </v-col>
                 </v-row>
@@ -93,6 +94,16 @@ async function onTimeAppTimeFormatChangedEvent(format: AvailableTimeFormat) {
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setTimeFormat(format);
+    } catch (e) {
+        notification.push("Awtrix connection error", 'error', intervalTime);
+    }
+}
+
+
+async function onAppTextColorChangedEvent(color:string) {
+    if (!awtrixClinet.value) return;
+    try {
+        await awtrixClinet.value.setTextColorOfTimeApp(color);
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }

@@ -22,6 +22,14 @@
             <CColorSelection title="Calendar Text Color" :rgbColor="props.settingInfo.CTCOL"
                 @on-color-changed="onCalendarTextColorChangedEvent" />
 
+
+            <!-- divider begin -->
+            <v-divider></v-divider>
+            <!-- divider end -->
+            <CAppTextColorSelection selected-text="Custom App Text Color" unselected-text="Use Global APP Text Color"
+                :rgbColor="props.settingInfo.TIME_COL" @on-text-color-changed="onAppTextColorChangedEvent" />
+
+
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
@@ -41,18 +49,15 @@ const props = defineProps<{
     settingInfo: AwtrixSettings | undefined,
 }>()
 
-
-// TODO: TIME_COL  => Text color of the time app. Use 0 for global text color.
-
-
 const emit = defineEmits<{
     "onCalendarHeaderColorChanged": [string],
     "onCalendarTextColorChanged": [string],
     "onCalendarBodyColorChanged": [string],
     "onTimeAppTimeFormatChanged": [AvailableTimeFormat],
+    "onAppTextColorChanged": [string],
 }>();
 
-const onTimeFormatChanged = (index:number) => {
+const onTimeFormatChanged = (index: number) => {
     emit("onTimeAppTimeFormatChanged", AvailableTimeFormatsList[index]);
 }
 
@@ -70,6 +75,10 @@ const onCalendarTextColorChangedEvent = (color: string) => {
 
 const onCalendarBodyColorChangedEvent = (color: string) => {
     emit("onCalendarBodyColorChanged", color);
+}
+
+const onAppTextColorChangedEvent = (color: string) => {
+    emit("onAppTextColorChanged", color);
 }
 </script>
 <style lang="css" scoped></style>

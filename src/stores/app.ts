@@ -22,11 +22,26 @@ const loadDataBoforeCheckLocalStorage = <T>(key: string, state: PiniaCustomState
 }
 
 
-function setData2LocalStoraget(that: any, key: string, data: unknown) {
-  const obj = that as unknown as { [key: string]: unknown };
-  obj[key] = data;
-  window.localStorage.setItem(key, JSON.stringify(data));
+function setData2LocalStoraget<T extends object>(
+  that: T,
+  key: keyof T,
+  data: unknown
+) {
+  const target = that[key];
+  if (isObject(target) && isObject(data)) {
+    Object.assign(target, data);
+    window.localStorage.setItem(key as string, JSON.stringify(target));
+    return;
+  }
+  that[key] = data as any;
+  window.localStorage.setItem(key as string, JSON.stringify(data));
 }
+
+
+function isObject(val: unknown): val is Record<string, any> {
+  return val !== null && typeof val === "object" && !Array.isArray(val);
+}
+
 
 // theme type
 export type SystemThemeType = 'dark' | 'light';
@@ -67,10 +82,10 @@ export const useAppStore = defineStore('app', {
     setAwtrixSettings(info: AwtrixSettings) {
       setData2LocalStoraget(this, "awtrixSettings", info)
     },
-    setSystemTheme(theme: SystemThemeType){
+    setSystemTheme(theme: SystemThemeType) {
       setData2LocalStoraget(this, 'theme', theme)
     },
-    setAwtrixTransitionEffects(list:string[]){
+    setAwtrixTransitionEffects(list: string[]) {
       setData2LocalStoraget(this, 'awtrixTransitionEffects', list)
     },
     clearAll() {
