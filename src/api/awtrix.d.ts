@@ -132,7 +132,7 @@ export interface AwtrixSettings {
   WDCA: number;
   /** Inactive weekday color. */
   WDCI: number;
-  TIME_COL: number;
+  TIME_COL: number; // OK
   DATE_COL: number;
   HUM_COL: number;
   TEMP_COL: number;
