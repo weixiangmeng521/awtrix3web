@@ -62,6 +62,7 @@ const updateState = (val: boolean) => {
         lock.value = true;
         return;
     }
+    emit("onTextColorChanged", "#FFFFFF")    
     currentColor.value =  16777215;
     state.value = val;
 }

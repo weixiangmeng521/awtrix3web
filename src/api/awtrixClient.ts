@@ -186,30 +186,6 @@ export default class AwtrixClient {
         return await response.text();
     }
 
-
-    /**
-     * Text color of the time app. Use 0 for global text color.
-     */
-    async setTimeAppColor(color: number): Promise<string> {
-        const payload = {
-            TIME_COL: color,
-        };
-        const response = await fetch(`http://${this.deviceIP}/api/settings`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.text();
-    }
-
-
     /**
      * TODO 
      * Date text color of the time app. Use 0 for global text color.
