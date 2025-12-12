@@ -124,6 +124,8 @@ async function rebootDevice() {
 }
 
 onBeforeMount(() => {
+    const appStore = useAppStore();
+    theme.value = appStore.getSystemTheme;
     awtrixClinet.value = new AwtrixClient(appStore.getConnectedDeviceIp);
 })
 

@@ -101,7 +101,6 @@ async function onTimeAppTimeFormatChangedEvent(format: AvailableTimeFormat) {
 
 
 async function onAppTextColorChangedEvent(color:string) {
-    console.log(color);
     if (!awtrixClinet.value) return;
     try {
         await awtrixClinet.value.setTextColorOfTimeApp(color);

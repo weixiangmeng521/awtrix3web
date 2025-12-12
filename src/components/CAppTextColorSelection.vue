@@ -46,7 +46,7 @@ const selectEvent = async () => {
     if (lock.value) return;
     const colorPickerModal = useColorPickerModal();
     const title = state ? props.selectedText : props.unselectedText;
-    const color = await colorPickerModal.open(title, decimalToRGB(props.rgbColor))
+    const color = await colorPickerModal.open(title, decimalToRGB(currentColor.value))
     const hex = decimalToHexColor(rgbToInt(color));
     if (props.rgbColor === rgbToInt(color)) return;
     currentColor.value = rgbToInt(color);
@@ -62,8 +62,8 @@ const updateState = (val: boolean) => {
         lock.value = true;
         return;
     }
-    emit("onTextColorChanged", "#FFFFFF")    
-    currentColor.value =  16777215;
+    emit("onTextColorChanged", "#FFFFFF")
+    currentColor.value =  rgbToInt({r:255, g: 255, b:255});
     state.value = val;
 }
 

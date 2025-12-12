@@ -57,7 +57,7 @@ export const useAppStore = defineStore('app', {
   }),
   getters: {
     getSystemTheme: (state) => {
-      return loadDataBoforeCheckLocalStorage<string>('theme', state);
+      return loadDataBoforeCheckLocalStorage<SystemThemeType>('theme', state);
     },
     getConnectedDeviceIp: (state) => {
       return loadDataBoforeCheckLocalStorage<string>('connectedDeviceIp', state);

@@ -122,9 +122,9 @@ export interface AwtrixSettings {
   CEL: boolean;
   BLOCKN: boolean; // ok
   UPPERCASE: boolean; // ok
-  /** Color correction for the matrix. */
+  /** Color correction for the matrix. [NOT TO DO]*/
   CCORRECTION: string;
-  /**	Color temperature for the matrix.  */
+  /**	Color temperature for the matrix. [NOT TO DO]*/
   CTEMP: string;
   /**	Enable or disable the weekday display. */
   WD: boolean;
