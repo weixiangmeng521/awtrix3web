@@ -55,6 +55,12 @@ const navList = [
                 check: ["DEVICE_CONNECTION"],
                 icon: "mdi-clock-time-eight-outline"
             },            
+            {
+                name: "DATE APP",
+                link: "/settings/date-app",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-calendar"
+            },              
         ],
     },
 ] as NavItem[];

@@ -43,6 +43,18 @@ export type AvailableTimeFormat = typeof AvailableTimeFormats[number];
  * %d/%m	16/04	Day/Month
  * %m-%d-%y	04-16-22	Month-Day-Year
  */
+export const AvailableDateFormatsList = [
+  "%d.%m.%y",
+  "%d.%m",
+  "%y-%m-%d",
+  "%m-%d",
+  "%m/%d/%y",
+  "%m/%d",
+  "%d/%m/%y",
+  "%d/%m",
+  "%m-%d-%y"
+] as const;
+
 export type AvailableDateFormats =
   | "%d.%m.%y"
   | "%d.%m"
@@ -114,8 +126,7 @@ export interface AwtrixSettings {
   CTCOL: number; // OK
   CBCOL: number; // OK
   TFORMAT: string; // OK
-  /** Date format for the DateApp. */
-  DFORMAT: string;
+  DFORMAT: string; // ok
   /** Start the week on Monday. */
   SOM: boolean;
   /** Shows the temperature in Celsius (Fahrenheit when false). */
@@ -133,7 +144,7 @@ export interface AwtrixSettings {
   /** Inactive weekday color. */
   WDCI: number;
   TIME_COL: number; // OK
-  DATE_COL: number;
+  DATE_COL: number; // OK
   HUM_COL: number;
   TEMP_COL: number;
   BAT_COL: number;

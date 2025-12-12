@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AwtrixAppInfo: typeof import('./components/AwtrixAppInfo.vue')['default']
+    AwtrixDateAppStyle: typeof import('./components/AwtrixDateAppStyle.vue')['default']
     AwtrixDeviceInfo: typeof import('./components/AwtrixDeviceInfo.vue')['default']
     AwtrixGlobalStyle: typeof import('./components/AwtrixGlobalStyle.vue')['default']
     AwtrixNativeApp: typeof import('./components/AwtrixNativeApp.vue')['default']
