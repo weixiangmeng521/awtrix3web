@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card-title class="mt-4">{{ props.title }}</v-card-title>
+        <v-card-title class="mt-4 font-weight-bold" style="font-size: 16px;">{{ props.title }}</v-card-title>
         <v-switch :model-value="props.state" hide-details inset @update:model-value="(val) => updateState(val ?? false)"
             :color="props.state ? 'rgb(76, 175, 80)' : ''" :class="props.state ? 'deep' : ''">
             <template v-slot:label>

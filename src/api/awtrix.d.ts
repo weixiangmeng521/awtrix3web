@@ -113,7 +113,7 @@ export type OverlayEffect = typeof OverlayEffects[number];
  * https://blueforcer.github.io/awtrix3/#/api?id=display-text-in-colored-fragments
  */
 export interface AwtrixSettings {
-  MATP: boolean; // ok
+  MATP: boolean; // OK
   ABRI: boolean; // OK
   BRI: number; // OK
   ATRANS: boolean; // OK
@@ -126,13 +126,12 @@ export interface AwtrixSettings {
   CTCOL: number; // OK
   CBCOL: number; // OK
   TFORMAT: string; // OK
-  DFORMAT: string; // ok
+  DFORMAT: string; // OK
+  CEL: boolean;  // OK
+  BLOCKN: boolean; // OK
+  UPPERCASE: boolean; // OK
   /** Start the week on Monday. */
-  SOM: boolean;
-  /** Shows the temperature in Celsius (Fahrenheit when false). */
-  CEL: boolean;
-  BLOCKN: boolean; // ok
-  UPPERCASE: boolean; // ok
+  SOM: boolean;  
   /** Color correction for the matrix. [NOT TO DO]*/
   CCORRECTION: string;
   /**	Color temperature for the matrix. [NOT TO DO]*/
@@ -143,19 +142,19 @@ export interface AwtrixSettings {
   WDCA: number;
   /** Inactive weekday color. */
   WDCI: number;
+  /** Allows to set the volume of the buzzer and DFplayer. */
+  VOL: number;  
   TIME_COL: number; // OK
   DATE_COL: number; // OK
-  HUM_COL: number;
-  TEMP_COL: number;
-  BAT_COL: number;
+  HUM_COL: number; // OK
+  TEMP_COL: number; // OK
+  BAT_COL: number; // OK
   SSPEED: number; // OK
   TIM: boolean; // OK
   DAT: boolean; // OK
   HUM: boolean; // OK
   TEMP: boolean; // OK
   BAT: boolean; // OK
-  /** Allows to set the volume of the buzzer and DFplayer. */
-  VOL: number;
   /** Sets a global effect overlay (cannot be used with app specific overlays). */
   OVERLAY: string; // OK
 }

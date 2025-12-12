@@ -66,7 +66,19 @@ const navList = [
                 link: "/settings/temperature-app",
                 check: ["DEVICE_CONNECTION"],
                 icon: "mdi-thermometer"
-            },                       
+            },
+            {
+                name: "HUM APP",
+                link: "/settings/humidity-app",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-water-percent"
+            },
+            {
+                name: "BAT APP",
+                link: "/settings/battery-app",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-battery"
+            },              
         ],
     },
 ] as NavItem[];

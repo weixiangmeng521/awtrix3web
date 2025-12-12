@@ -5,15 +5,8 @@
             <!-- divider begin -->
             <v-divider></v-divider>
             <!-- divider end -->
-            <CSwitch :title="props.settingInfo.CEL ? 'Show Celsius' : 'Show Fahrenheit'" :state="props.settingInfo.CEL"
-                @update-state="onDisplayUnitChanged" />
-
-
-            <!-- divider begin -->
-            <v-divider></v-divider>
-            <!-- divider end -->
             <CAppTextColorSelection selected-text="Custom App Text Color" unselected-text="Use Global APP Text Color"
-                :rgbColor="props.settingInfo.TEMP_COL" @on-text-color-changed="onAppTextColorChangedEvent" />
+                :rgbColor="props.settingInfo.BAT_COL" @on-text-color-changed="onAppTextColorChangedEvent" />
 
         </v-card-item>
     </v-card>
@@ -26,15 +19,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     "onAppTextColorChanged": [string],
-    "onDisplayUnitChanged": [boolean],
 }>();
 
 const onAppTextColorChangedEvent = (color: string) => {
     emit("onAppTextColorChanged", color);
-}
-
-const onDisplayUnitChanged = (stat: Boolean) => {
-    emit("onDisplayUnitChanged", stat as boolean);
 }
 </script>
 <style lang="css" scoped></style>

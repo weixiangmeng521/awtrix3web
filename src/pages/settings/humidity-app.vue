@@ -4,9 +4,8 @@
             <v-container class="flex">
                 <v-row>
                     <v-col cols="12" md="4">
-                        <AwtrixTemperatureAppStyle :settingInfo="settingsInfo"
+                        <AwtrixHumidityAppStyle :settingInfo="settingsInfo"
                             @onAppTextColorChanged="onAppTextColorChangedEvent"
-                            @onDisplayUnitChanged="onDisplayUnitChangedEvent"
                              />
                     </v-col>
                 </v-row>
@@ -45,17 +44,7 @@ async function fetchAwtrixDeviceSettings() {
 async function onAppTextColorChangedEvent(color: string) {
     if (!awtrixClinet.value) return;
     try {
-        await awtrixClinet.value.setTemperatureAppColor(color);
-    } catch (e) {
-        notification.push("Awtrix connection error", 'error', intervalTime);
-    }
-}
-
-
-async function onDisplayUnitChangedEvent(state: boolean) {
-    if (!awtrixClinet.value) return;
-    try {
-        await awtrixClinet.value.setTempUnit(state);
+        await awtrixClinet.value.setHumidityAppColor(color);
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }
