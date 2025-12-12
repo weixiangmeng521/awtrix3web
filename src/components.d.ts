@@ -17,6 +17,7 @@ declare module 'vue' {
     AwtrixDeviceInfo: typeof import('./components/AwtrixDeviceInfo.vue')['default']
     AwtrixGlobalStyle: typeof import('./components/AwtrixGlobalStyle.vue')['default']
     AwtrixNativeApp: typeof import('./components/AwtrixNativeApp.vue')['default']
+    AwtrixTemperatureAppStyle: typeof import('./components/AwtrixTemperatureAppStyle.vue')['default']
     AwtrixTimeAppController: typeof import('./components/AwtrixTimeAppController.vue')['default']
     AwtrixTimeAppStyle: typeof import('./components/AwtrixTimeAppStyle.vue')['default']
     AwtrixTimeAppTimeMode: typeof import('./components/AwtrixTimeAppTimeMode.vue')['default']

@@ -253,10 +253,9 @@ export default class AwtrixClient {
     }
 
     /**
-     * TODO     
      * Temperature text color of the time app. Use 0 for global text color.
      */
-    async setTemperatureAppColor(color: number): Promise<string> {
+    async setTemperatureAppColor(color: number | string): Promise<string> {
         const payload = {
             TEMP_COL: color,
         };

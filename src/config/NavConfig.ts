@@ -60,7 +60,13 @@ const navList = [
                 link: "/settings/date-app",
                 check: ["DEVICE_CONNECTION"],
                 icon: "mdi-calendar"
-            },              
+            },
+            {
+                name: "TEMP APP",
+                link: "/settings/temperature-app",
+                check: ["DEVICE_CONNECTION"],
+                icon: "mdi-thermometer"
+            },                       
         ],
     },
 ] as NavItem[];
