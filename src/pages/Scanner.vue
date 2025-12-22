@@ -112,6 +112,7 @@ function onMessageReciver(data: WebSocketResponseDataType<string>) {
 
 // when user select a device
 async function selectDevice(device: DeviceInfo) {
+  send({ event: "set_awtrix_device_ip" , payload: device.ip})
   appStore.setShouldConnectDeviceIp(device.ip);
   // console.log(httpClient);
   const client = new AwtrixClient(device.ip);

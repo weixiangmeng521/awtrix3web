@@ -1,6 +1,5 @@
 import type { APISchema } from './request.d';
 import { createRequestClient } from './request';
-import { useAppStore } from '@/stores/app';
 
 interface TestAPISchema extends APISchema {
     getAwtrixDeviceInfo: {

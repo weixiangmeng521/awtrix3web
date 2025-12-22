@@ -16,6 +16,9 @@ func init() {
 	WSEventMapper = make(map[string]func(conn *websocket.Conn, data *controller.WSClientMessage[any]))
 	WSEventMapper["ping"] = ws_events.HeartBeatEvent
 	WSEventMapper["scann_devices"] = ws_events.ScannDevicesEvent
+	WSEventMapper["set_awtrix_device_ip"] = ws_events.SetAwtrixDeviceIp
+	WSEventMapper["sub_awtrix_states"] = ws_events.SubscribeAwtrixStats
+	WSEventMapper["unsub_awtrix_states"] = ws_events.UnsubscribeAwtrixStats
 }
 
 var upgrader = websocket.Upgrader{
@@ -46,14 +49,8 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		log.Println(">>> Event:" + data.Event)
 		WSEventMapper[data.Event](conn, &data)
-
-		// // 回显消息
-		// err = conn.WriteMessage(websocket.TextMessage, msg)
-		// if err != nil {
-		// 	log.Println("Write error:", err)
-		// 	return
-		// }
 	}
 }
 

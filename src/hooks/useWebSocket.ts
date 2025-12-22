@@ -5,6 +5,9 @@ import SystemConfig from '@/config/SystemConfig';
 const websoketEventList = [
     'ping',
     'scann_devices',
+    'set_awtrix_device_ip',
+    'sub_awtrix_states',
+    'unsub_awtrix_states',
 ] as const;
 
 
@@ -38,11 +41,22 @@ export type WebSocketResponseDataType<T> = {
 export function useWebSocket() {
     const socket = ref<WebSocket>();
     const isConnected = ref(false);
+    const messageQueue = ref<string[]>([]);
     let onMessageCallback: ((msg: WebSocketResponseDataType<unknown>) => void) | undefined;
 
     const onMessage = <T = unknown>(cb: (msg: WebSocketResponseDataType<T>) => void) => {
         onMessageCallback = cb as (msg: WebSocketResponseDataType<unknown>) => void;
     };
+
+    // flush queue when socket is open
+    const flushQueue = () => {
+        if (socket.value?.readyState !== WebSocket.OPEN) return;
+
+        while (messageQueue.value.length > 0) {
+            const msg = messageQueue.value.shift()!;
+            socket.value.send(msg);
+        }
+    };    
 
     // connect data
     const connect = () => {
@@ -50,9 +64,11 @@ export function useWebSocket() {
 
         socket.value.onopen = () => {
             isConnected.value = true;
+            flushQueue();
         };
 
         socket.value.onmessage = (event) => {
+            if(!event.data) return;
             // messages.value.push(JSON.parse(event.data));
             onMessageCallback && onMessageCallback(JSON.parse(event.data))
         };
@@ -65,12 +81,16 @@ export function useWebSocket() {
 
     // send data
     const send = <T>(data: WebSoketSendDataType<T>) => {
+        const payload = JSON.stringify(data);        
         if (socket.value?.readyState === WebSocket.OPEN) {
-            if (typeof data === 'string') {
-                socket.value.send(data);
+            try {
+                socket.value.send(payload);
                 return;
+            } catch {
+                messageQueue.value.push(payload);
             }
-            socket.value.send(JSON.stringify(data));
+        } else {
+            messageQueue.value.push(payload);
         }
     };
 
@@ -82,7 +102,18 @@ export function useWebSocket() {
         send({ event: "ping" });
     }
 
+    
+    function setAwtrixDeviceIp(){
+        const connectedDeviceIp = window.localStorage.getItem("connectedDeviceIp");
+        if(connectedDeviceIp) {
+            send({ event: "set_awtrix_device_ip", payload: connectedDeviceIp });
+        }
+    }
+
+
     onMounted(() => {
+        connect();        
+        setAwtrixDeviceIp();
         intervalId = setInterval(ping, 30000)
     })
 
@@ -91,7 +122,5 @@ export function useWebSocket() {
         intervalId && clearInterval(intervalId)
     });
 
-    connect();
-
-    return { socket, isConnected, onMessage, send };
+    return { socket, isConnected, send, onMessage };
 }

@@ -1,5 +1,6 @@
 // Utilities
 import type { AwtrixSettings, AwtrixStats } from '@/api/awtrix';
+import { useWebSocket } from '@/hooks/useWebSocket';
 import { defineStore, type PiniaCustomStateProperties, type StateTree } from 'pinia'
 
 
@@ -45,8 +46,6 @@ function isObject(val: unknown): val is Record<string, any> {
 
 // theme type
 export type SystemThemeType = 'dark' | 'light';
-
-
 export const useAppStore = defineStore('app', {
   state: () => ({
     theme: 'light' as SystemThemeType,

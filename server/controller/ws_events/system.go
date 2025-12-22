@@ -24,7 +24,7 @@ func HeartBeatEvent(conn *websocket.Conn, data *controller.WSClientMessage[any])
 	message := controller.WSServerMessage[string]{
 		Type:    1,
 		Payload: "pong",
-		Message: "心跳响应",
+		Message: "server heartbeat response",
 		Refer:   data.Event,
 	}
 	b := JSONStringify(message)

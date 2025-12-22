@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	// getFromAwtrix()
 	customHttp := http.NewServeMux()
 	router.InitWebSocket(customHttp)
 	router.InitRouter(customHttp)
