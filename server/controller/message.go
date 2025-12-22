@@ -16,6 +16,12 @@ type WSClientMessage[T any] struct {
 }
 
 type WSServerMessage[T any] struct {
+    // -1, -> error
+    // 0,  -> invalid
+    // 1,  -> OK
+    // 2,  -> stream start flag
+    // 3,  -> streaming flag
+    // 4,  -> stream end flag
 	Type    int    `json:"type"`
 	Payload T      `json:"payload"`
 	Message string `json:"message"`

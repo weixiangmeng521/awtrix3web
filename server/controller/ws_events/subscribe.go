@@ -13,6 +13,10 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+var (
+	PushMessagePeriod = 300 * time.Millisecond
+)
+
 func startTaskManager(ip string) {
 	client := awtrix_api.New(ip)
 	if client == nil {
@@ -76,7 +80,7 @@ func SubscribeAwtrixStats(conn *websocket.Conn, data *controller.WSClientMessage
 		data.Event,
 		constants.AWTRIX_STATE,
 		constants.AWTRIX_STATE,
-		1*time.Second,
+		PushMessagePeriod,
 		func() ([]byte, error) {
 			v, ok := cache.Get(constants.AWTRIX_STATE)
 			if !ok {
@@ -113,7 +117,7 @@ func SubscribeAwtrixSettings(conn *websocket.Conn, data *controller.WSClientMess
 		data.Event,
 		constants.AWTRIX_SETTINGS,
 		constants.AWTRIX_SETTINGS,
-		1*time.Second,
+		PushMessagePeriod,
 		func() ([]byte, error) {
 			v, ok := cache.Get(constants.AWTRIX_SETTINGS)
 			if !ok {
@@ -152,7 +156,7 @@ func SubscribeAwtrixLoopInfo(conn *websocket.Conn, data *controller.WSClientMess
 		data.Event,
 		constants.AWTRIX_LOOP_INFO,
 		constants.AWTRIX_LOOP_INFO,
-		1*time.Second,
+		PushMessagePeriod,
 		func() ([]byte, error) {
 			v, ok := cache.Get(constants.AWTRIX_LOOP_INFO)
 			if !ok {

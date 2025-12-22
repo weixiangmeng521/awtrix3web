@@ -78,27 +78,35 @@ type DeviceInfo = {
   isAwtrixDevice: boolean;
 }
 
+// TODO: scann device mode:  "fast" | "server" 
+const CHECK_DEVICE_MODE:string = "server";
+
 // pinia store
 const appStore = useAppStore()
 
 watch(deviceList, async (newList) => {
   for (const device of newList) {
     if (device.state === "idle") {
-      console.log("Checking device:", device.ip);
       device.state = "checking";
-      const isAwtrix = await checkDeviceIsAwtrixDevice(device.ip);
-      device.isAwtrixDevice = isAwtrix;
-      device.state = "done";
+      if(CHECK_DEVICE_MODE === "fast") {
+        const isAwtrix = await checkDeviceIsAwtrixDevice(device.ip);
+        device.isAwtrixDevice = isAwtrix;
+        device.state = "done";
+      }
+      if(CHECK_DEVICE_MODE === "server") {
+        send({ event: "check_awtrix_device" , payload: device.ip });
+      }
     }
   }
 }, { deep: true });
 
 // when the websocket receive scann_devices event 
-function onMessageReciver(data: WebSocketResponseDataType<string>) {
+function onMessageReciver(data: WebSocketResponseDataType<unknown>) {
+  // scann device events
   if (data.refer === "scann_devices") {
     if (data.payload && data.type === 1) {
       deviceList.value.push({
-        ip: data.payload,
+        ip: data.payload as string,
         state: "idle",
         isAwtrixDevice: false,
       });
@@ -107,6 +115,17 @@ function onMessageReciver(data: WebSocketResponseDataType<string>) {
     if (data.type === 4) {
       scanState.value = 'done';
     }
+  }
+  // check device events
+  if (data.refer === "check_awtrix_device") {
+    deviceList.value.map((item) => {
+      const payload = data.payload as Omit<DeviceInfo, "state" | "isAwtrixDevice"> & { is_awtrix_device: boolean };
+      if(item.ip === payload.ip){
+        item.isAwtrixDevice = payload.is_awtrix_device;
+        item.state = "done";
+      }
+      return item;
+    })
   }
 }
 

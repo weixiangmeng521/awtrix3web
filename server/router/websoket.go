@@ -16,6 +16,7 @@ func init() {
 	WSEventMapper = make(map[string]func(conn *websocket.Conn, data *controller.WSClientMessage[any]))
 	WSEventMapper["ping"] = ws_events.HeartBeatEvent
 	WSEventMapper["scann_devices"] = ws_events.ScannDevicesEvent
+	WSEventMapper["check_awtrix_device"] = ws_events.CheckAwtrixDevice
 	WSEventMapper["set_awtrix_device_ip"] = ws_events.SetAwtrixDeviceIp
 	WSEventMapper["remove_awtrix_device"] = ws_events.RemoveAwtrixDevice
 	WSEventMapper["sub_awtrix_states"] = ws_events.SubscribeAwtrixStats

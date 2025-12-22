@@ -63,7 +63,6 @@ func (c *AwtrixClient) request(
 	payload any,
 	respStruct any,
 ) error {
-
 	var body io.Reader = nil
 	if payload != nil {
 		j, err := json.Marshal(payload)
@@ -120,6 +119,31 @@ func (c *AwtrixClient) GetAwtrixDeviceInfo() (*controller.AwtrixStats, error) {
 
 	return v, nil
 }
+
+/**
+ * check device is awtrix device
+ */
+func (c *AwtrixClient) CheckIsAwtrixDevice(ip string) bool {
+	client := &http.Client{
+		Timeout: 1000 * time.Millisecond,
+	}
+	url := fmt.Sprintf("http://%s/api/settings", ip)
+	resp, err := client.Get(url)
+	if err != nil {
+		return false
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return false
+	}
+	body, err := io.ReadAll(resp.Body)
+	str := strings.TrimSpace(string(body))
+	if len(str) > 0 && str[0] == byte('{') {
+		return true
+	}
+	return false
+}
+
 func (c *AwtrixClient) GetTransitionEffectList() ([]string, error) {
 	var out []string
 	err := c.request(context.Background(), "GET", "/api/transitions", nil, &out)

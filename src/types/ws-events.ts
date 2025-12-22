@@ -2,6 +2,7 @@
 export const WSEvents = [
   "ping",
   "scann_devices",
+  "check_awtrix_device",
   "set_awtrix_device_ip",
   "remove_awtrix_device",
   "sub_awtrix_states",
