@@ -138,6 +138,7 @@ function startScannDevices() {
 function closeConnection() {
   const store = useAppStore();
   store.clearAll();
+  send({ event: "remove_awtrix_device" })
   window.location.reload();
 }
 

@@ -5,28 +5,72 @@ import (
 	"sync"
 	"time"
 
+	"github.com/cespare/xxhash/v2"
 	"github.com/gorilla/websocket"
 )
 
 /*
 |--------------------------------------------------------------------------
-| Subscriber
+| Client (one per websocket connection)
+|--------------------------------------------------------------------------
+*/
+
+type Client struct {
+	conn *websocket.Conn
+	send chan []byte
+	done chan struct{}
+	once sync.Once
+}
+
+func (c *Client) writePump() {
+	for {
+		select {
+		case msg := <-c.send:
+			if err := c.conn.WriteMessage(websocket.TextMessage, msg); err != nil {
+				log.Println("ws write error:", err)
+				c.Close()
+				return
+			}
+		case <-c.done:
+			return
+		}
+	}
+}
+
+func (c *Client) Close() {
+	c.once.Do(func() {
+		close(c.done)      // ✅ 只关闭 done
+		_ = c.conn.Close() // websocket 关闭
+	})
+}
+
+/*
+|--------------------------------------------------------------------------
+| Subscription
 |--------------------------------------------------------------------------
 */
 
 type Subscription struct {
 	id       string
-	conn     *websocket.Conn
+	client   *Client
 	event    string
 	cacheKey string
 	interval time.Duration
 	sendFn   func() ([]byte, error)
 	stop     chan struct{}
+	lastHash uint64
 }
 
+/*
+|--------------------------------------------------------------------------
+| Manager
+|--------------------------------------------------------------------------
+*/
+
 type Manager struct {
-	mu   sync.Mutex
-	subs map[*websocket.Conn]map[string]*Subscription
+	mu      sync.Mutex
+	clients map[*websocket.Conn]*Client
+	subs    map[*Client]map[string]*Subscription
 }
 
 var (
@@ -40,7 +84,8 @@ func GetManager() *Manager {
 
 	if manager == nil {
 		manager = &Manager{
-			subs: make(map[*websocket.Conn]map[string]*Subscription),
+			clients: make(map[*websocket.Conn]*Client),
+			subs:    make(map[*Client]map[string]*Subscription),
 		}
 	}
 	return manager
@@ -60,9 +105,23 @@ func (m *Manager) Subscribe(
 	interval time.Duration,
 	sendFn func() ([]byte, error),
 ) {
+	m.mu.Lock()
+
+	client, ok := m.clients[conn]
+	if !ok {
+		client = &Client{
+			conn: conn,
+			send: make(chan []byte, 256),
+			done: make(chan struct{}),
+		}
+		m.clients[conn] = client
+		m.subs[client] = make(map[string]*Subscription)
+		go client.writePump()
+	}
+
 	sub := &Subscription{
 		id:       subID,
-		conn:     conn,
+		client:   client,
 		event:    event,
 		cacheKey: cacheKey,
 		interval: interval,
@@ -70,11 +129,7 @@ func (m *Manager) Subscribe(
 		stop:     make(chan struct{}),
 	}
 
-	m.mu.Lock()
-	if _, ok := m.subs[conn]; !ok {
-		m.subs[conn] = make(map[string]*Subscription)
-	}
-	m.subs[conn][subID] = sub
+	m.subs[client][subID] = sub
 	m.mu.Unlock()
 
 	go sub.run()
@@ -84,21 +139,23 @@ func (m *Manager) Unsubscribe(conn *websocket.Conn, subID string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	connSubs, ok := m.subs[conn]
+	client, ok := m.clients[conn]
 	if !ok {
 		return
 	}
 
-	sub, ok := connSubs[subID]
+	sub, ok := m.subs[client][subID]
 	if !ok {
 		return
 	}
 
 	close(sub.stop)
-	delete(connSubs, subID)
+	delete(m.subs[client], subID)
 
-	if len(connSubs) == 0 {
-		delete(m.subs, conn)
+	if len(m.subs[client]) == 0 {
+		client.Close()
+		delete(m.subs, client)
+		delete(m.clients, conn)
 	}
 }
 
@@ -106,16 +163,18 @@ func (m *Manager) UnsubscribeAll(conn *websocket.Conn) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	connSubs, ok := m.subs[conn]
+	client, ok := m.clients[conn]
 	if !ok {
 		return
 	}
 
-	for _, sub := range connSubs {
+	for _, sub := range m.subs[client] {
 		close(sub.stop)
 	}
 
-	delete(m.subs, conn)
+	client.Close()
+	delete(m.subs, client)
+	delete(m.clients, conn)
 }
 
 /*
@@ -134,17 +193,27 @@ func (s *Subscription) run() {
 			b, err := s.sendFn()
 			if err != nil {
 				log.Println("subscribe send error:", err)
-				_ = s.conn.Close()
 				return
 			}
 
-			if err := s.conn.WriteMessage(websocket.TextMessage, b); err != nil {
-				log.Println("ws write error:", err)
-				_ = s.conn.Close()
+			h := xxhash.Sum64(b) // 极快
+			if h == s.lastHash {
+				continue
+			}
+
+			s.lastHash = h
+
+			select {
+			case <-s.client.done:
 				return
+			case s.client.send <- b:
+			default:
+				log.Println("send buffer full, drop message")
 			}
 
 		case <-s.stop:
+			return
+		case <-s.client.done:
 			return
 		}
 	}

@@ -28,16 +28,13 @@ var (
 
 // Create a new AwtrixClient with timeout
 func New(ip string) *AwtrixClient {
-	// 第一次检查（无锁，快）
 	if instance != nil {
 		return instance
 	}
 
-	// 加锁
 	instanceLock.Lock()
 	defer instanceLock.Unlock()
 
-	// 第二次检查（防止并发重复创建）
 	if instance == nil {
 		instance = &AwtrixClient{
 			DeviceIP: ip,
@@ -71,6 +68,7 @@ func (c *AwtrixClient) request(
 	if payload != nil {
 		j, err := json.Marshal(payload)
 		if err != nil {
+			log.Panic("json.Marshal err:" + err.Error())
 			return err
 		}
 		body = bytes.NewBuffer(j)
@@ -86,18 +84,19 @@ func (c *AwtrixClient) request(
 		body,
 	)
 	if err != nil {
-		log.Panic("Route not found.")
+		log.Panic("Route not found." + err.Error())
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	res, err := c.httpClient.Do(req)
 	if err != nil {
+		log.Panic("Request error." + err.Error())
 		return err
 	}
 	defer res.Body.Close()
-
 	if res.StatusCode < 200 || res.StatusCode > 299 {
 		b, _ := io.ReadAll(res.Body)
+		log.Fatalf("HTTP %d: %s", res.StatusCode, string(b))
 		return fmt.Errorf("HTTP %d: %s", res.StatusCode, string(b))
 	}
 

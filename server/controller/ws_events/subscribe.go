@@ -27,7 +27,6 @@ func startTaskManager(ip string) {
 	}, 1000)
 }
 
-// TODO
 func stopTaskManager() {
 	manager := tasker.GetManager()
 	manager.StopAll()
@@ -56,6 +55,15 @@ func SetAwtrixDeviceIp(conn *websocket.Conn, data *controller.WSClientMessage[an
 	log.Println("Done")
 }
 
+// remove target device
+func RemoveAwtrixDevice(conn *websocket.Conn, data *controller.WSClientMessage[any]){
+	instance := awtrix_api.GetInstance()
+	ip := instance.DeviceIP;
+	stopTaskManager()
+	log.Println("Remove device: " + ip  + " done.")
+}
+
+
 /**
  * 设备状态（ /api/stats ）
  */
@@ -79,7 +87,7 @@ func SubscribeAwtrixStats(conn *websocket.Conn, data *controller.WSClientMessage
 				Payload: v,
 				Message: "/api/stats",
 				Refer:   data.Event,
-			}			
+			}		
 			return JSONStringify(msg), nil
 		},
 	)
@@ -94,21 +102,78 @@ func UnsubscribeAwtrixStats(conn *websocket.Conn, data *controller.WSClientMessa
 }
 
 /**
- * 设备状态（ /api/settings ）
+ * 设备配置（ /api/settings ）
  */
 func SubscribeAwtrixSettings(conn *websocket.Conn, data *controller.WSClientMessage[any]) {
-	message := controller.WSServerMessage[string]{
-		Type:    1,
-		Payload: "done",
-		Message: "server response",
-		Refer:   data.Event,
-	}
-	b := JSONStringify(message)
-	err := conn.WriteMessage(websocket.TextMessage, b)
-	if err != nil {
-		log.Println("Write error:", err)
-		conn.Close()
-		return
-	}
-	log.Println("Done")
+	cache := cacher.Get[*controller.AwtrixSettings]()
+	m := subscriber.GetManager()
+
+	m.Subscribe(
+		conn,
+		data.Event,
+		constants.AWTRIX_SETTINGS,
+		constants.AWTRIX_SETTINGS,
+		1*time.Second,
+		func() ([]byte, error) {
+			v, ok := cache.Get(constants.AWTRIX_SETTINGS)
+			if !ok {
+				return nil, nil
+			}
+			msg := controller.WSServerMessage[*controller.AwtrixSettings]{
+				Type:    1,
+				Payload: v,
+				Message: "/api/settings",
+				Refer:   data.Event,
+			}			
+			return JSONStringify(msg), nil
+		},
+	)
+}
+
+
+/**
+ * 设备配置（ /api/settings ）
+ */
+func UnsubscribeAwtrixSettings(conn *websocket.Conn, data *controller.WSClientMessage[any]) {
+	m := subscriber.GetManager()
+	m.Unsubscribe(conn, constants.AWTRIX_SETTINGS)
+}
+
+
+/**
+ * 设备配置（ /api/loop/info ）
+ */
+func SubscribeAwtrixLoopInfo(conn *websocket.Conn, data *controller.WSClientMessage[any]) {
+	cache := cacher.Get[*controller.AppLoopInfo]()
+	m := subscriber.GetManager()
+
+	m.Subscribe(
+		conn,
+		data.Event,
+		constants.AWTRIX_LOOP_INFO,
+		constants.AWTRIX_LOOP_INFO,
+		1*time.Second,
+		func() ([]byte, error) {
+			v, ok := cache.Get(constants.AWTRIX_LOOP_INFO)
+			if !ok {
+				return nil, nil
+			}
+			msg := controller.WSServerMessage[*controller.AppLoopInfo]{
+				Type:    1,
+				Payload: v,
+				Message: "/api/loop",
+				Refer:   data.Event,
+			}					
+			return JSONStringify(msg), nil
+		},
+	)
+}
+
+
+/**
+ * 设备配置（ /api/settings ）
+ */
+func UnsubscribeAwtrixLoopInfo(conn *websocket.Conn, data *controller.WSClientMessage[any]) {
+	m := subscriber.GetManager()
+	m.Unsubscribe(conn, constants.AWTRIX_LOOP_INFO)
 }

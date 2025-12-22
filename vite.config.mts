@@ -7,10 +7,12 @@ import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import fs from "node:fs"
 
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import path from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -57,6 +59,38 @@ export default defineConfig({
         ],
       },
     }),
+    [
+      {
+        name: 'watch-golang-websocket-routes-files',
+        handleHotUpdate({ file }) {
+          // websoket.go
+          if (file.endsWith("server/router/websoket.go")) {
+            const code = fs.readFileSync(file, 'utf8')
+            const regex = /WSEventMapper\s*\[\s*("?[\w_]+"?)\s*\]\s*=/g
+
+            const keys = new Set()
+            let match
+
+            while ((match = regex.exec(code)) !== null) {
+              let key = match[1]
+              key = key.replace(/^"|"$/g, '') // 去掉引号
+              keys.add(key)
+            }
+
+            const ts = `
+// ⚠️ AUTO-GENERATED FILE — DO NOT EDIT
+export const WSEvents = ${JSON.stringify([...keys], null, 2)} as const
+
+export type WSEvent = typeof WSEvents[number]
+`.trimStart()
+            // 3. 写入文件
+            const outDir = path.resolve('src/types')
+            fs.mkdirSync(outDir, { recursive: true })
+            fs.writeFileSync(path.join(outDir, 'ws-events.ts'), ts, 'utf8')
+          }
+        },
+      },
+    ],
   ],
   optimizeDeps: {
     exclude: [

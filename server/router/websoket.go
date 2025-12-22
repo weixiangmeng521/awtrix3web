@@ -17,8 +17,13 @@ func init() {
 	WSEventMapper["ping"] = ws_events.HeartBeatEvent
 	WSEventMapper["scann_devices"] = ws_events.ScannDevicesEvent
 	WSEventMapper["set_awtrix_device_ip"] = ws_events.SetAwtrixDeviceIp
+	WSEventMapper["remove_awtrix_device"] = ws_events.RemoveAwtrixDevice
 	WSEventMapper["sub_awtrix_states"] = ws_events.SubscribeAwtrixStats
 	WSEventMapper["unsub_awtrix_states"] = ws_events.UnsubscribeAwtrixStats
+	WSEventMapper["sub_awtrix_settings"] = ws_events.SubscribeAwtrixSettings
+	WSEventMapper["unsub_awtrix_settings"] = ws_events.UnsubscribeAwtrixSettings
+	WSEventMapper["sub_awtrix_loop_info"] = ws_events.SubscribeAwtrixLoopInfo
+	WSEventMapper["unsub_awtrix_loop_info"] = ws_events.UnsubscribeAwtrixLoopInfo	
 }
 
 var upgrader = websocket.Upgrader{

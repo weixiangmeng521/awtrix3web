@@ -1,15 +1,6 @@
 import { ref, onBeforeUnmount } from 'vue';
 import SystemConfig from '@/config/SystemConfig';
-
-// defined event list
-const websoketEventList = [
-    'ping',
-    'scann_devices',
-    'set_awtrix_device_ip',
-    'sub_awtrix_states',
-    'unsub_awtrix_states',
-] as const;
-
+import type { WSEvents } from '@/types/ws-events';
 
 // defined server response type list
 const definedServerTypeList = [
@@ -23,7 +14,7 @@ const definedServerTypeList = [
 
 // request
 export type WebSoketSendDataType<T> = {
-    event: (typeof websoketEventList)[number],
+    event: (typeof WSEvents)[number],
     payload?: T,
     message?: string,
 }
