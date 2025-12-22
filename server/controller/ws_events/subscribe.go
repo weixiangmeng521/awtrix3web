@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	PushMessagePeriod = 300 * time.Millisecond
+	PushMessagePeriod = 100 * time.Millisecond
 )
 
 func startTaskManager(ip string) {

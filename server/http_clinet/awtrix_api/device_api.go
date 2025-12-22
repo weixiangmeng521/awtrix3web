@@ -83,13 +83,13 @@ func (c *AwtrixClient) request(
 		body,
 	)
 	if err != nil {
-		log.Panic("Route not found." + err.Error())
+		log.Println("Route not found." + err.Error())
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	res, err := c.httpClient.Do(req)
 	if err != nil {
-		log.Panic("Request error." + err.Error())
+		log.Println("Request error." + err.Error())
 		return err
 	}
 	defer res.Body.Close()

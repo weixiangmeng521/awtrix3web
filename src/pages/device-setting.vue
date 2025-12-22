@@ -44,15 +44,16 @@ import { useAppStore } from '@/stores/app';
 import AwtrixClient from '@/api/awtrixClient';
 import type { AppLoopInfo, AwtrixSettings, AwtrixStats } from '@/api/awtrix';
 import { useNotificationStore } from '@/hooks/useNotificationStore';
+import { useWebSocket, type WebSocketResponseDataType } from '@/hooks/useWebSocket';
 const awtrixClinet = ref<AwtrixClient>();
 const appStore = useAppStore();
 const deviceInfo = ref<AwtrixStats>();
 const settingsInfo = ref<AwtrixSettings>();
 const appLoopInfo = ref<AppLoopInfo>();
 const notification = useNotificationStore();
-const eventIntervalMap = ref<Map<string, number>>(new Map());
 const intervalTime = 3000;
 const transitionList = ref<string[]>([]);
+const { send, onMessage } = useWebSocket();
 
 
 /**
@@ -327,42 +328,36 @@ async function setTransitionTime(ms: number) {
 }
 
 
-
-async function fetchAwtrixDeviceSettings() {
-    if (!awtrixClinet.value) return;
-    let data;
-    try {
-        data = await awtrixClinet.value.getSettingInfo();
-    } catch (e) {
-        notification.push("Awtrix connection error", 'error', intervalTime);
+function onMessageRevicer(data: WebSocketResponseDataType<unknown>){
+    if(data.refer === "sub_awtrix_states"){
+        const payload = data.payload as AwtrixStats; 
+        deviceInfo.value = payload;
+        appStore.setAwtrixDeviceInfo(payload)
     }
-    settingsInfo.value = data;
-    data && appStore.setAwtrixSettings(data)
+    if(data.refer === "sub_awtrix_settings"){
+        const payload = data.payload as AwtrixSettings;
+        settingsInfo.value = payload;
+        appStore.setAwtrixSettings(payload)
+    }
 }
 
-
-async function intervalDeviceInfo() {
-    await Promise.all([
-        fetchAwtrixDeviceInfo(),
-        fetchAwtrixDeviceSettings(),
-    ])
-}
 
 
 onBeforeMount(async () => {
+    onMessage(onMessageRevicer)
     // init
-    await Promise.all([await fetchAwtrixDeviceInfo(), await fetchApiLoop(), await getTransitionEffectList()]);
+    await Promise.all([await fetchApiLoop(), await getTransitionEffectList()]);
 })
 
 
 onMounted(() => {
     awtrixClinet.value = new AwtrixClient(appStore.getConnectedDeviceIp);
-    const h = setInterval(intervalDeviceInfo, 2000);
-    eventIntervalMap.value.set("intervalDeviceInfo", h);
+    send({ event: "sub_awtrix_states" });
+    send({ event: "sub_awtrix_settings" });
 })
 
 onUnmounted(() => {
-    const h = eventIntervalMap.value.get("intervalDeviceInfo");
-    clearInterval(h)
+    send({ event: "unsub_awtrix_states" });
+    send({ event: "unsub_awtrix_settings" });
 })
 </script>
