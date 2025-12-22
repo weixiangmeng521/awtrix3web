@@ -299,22 +299,6 @@ async function fetchApiLoop() {
 }
 
 /**
- * get awtrix device info
- */
-async function fetchAwtrixDeviceInfo() {
-    if (!awtrixClinet.value) return;
-    let data;
-    try {
-        data = await awtrixClinet.value.getAwtrixDeviceInfo();
-    } catch (e) {
-        notification.push("Awtrix connection error", 'error', intervalTime);
-    }
-    deviceInfo.value = data;
-    data && appStore.setAwtrixDeviceInfo(data)
-}
-
-
-/**
  * set transition time
  */
 async function setTransitionTime(ms: number) {

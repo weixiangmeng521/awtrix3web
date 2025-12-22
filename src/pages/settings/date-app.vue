@@ -29,19 +29,6 @@ const notification = useNotificationStore();
 const intervalTime = 3000;
 const { onMessage, send } = useWebSocket();
 
-async function fetchAwtrixDeviceSettings() {
-    if (!awtrixClinet.value) return;
-    let data;
-    try {
-        data = await awtrixClinet.value.getSettingInfo();
-    } catch (e) {
-        notification.push("Awtrix connection error", 'error', intervalTime);
-    }
-    settingsInfo.value = data;
-    data && appStore.setAwtrixSettings(data)
-}
-
-
 async function onDateAppTimeFormatChangedEvent(format: string) {
     if (!awtrixClinet.value) return;
     try {

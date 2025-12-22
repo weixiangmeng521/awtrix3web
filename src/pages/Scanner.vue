@@ -62,6 +62,7 @@
 
 <script lang="ts" setup>
 import { checkDeviceIsAwtrixDevice } from '@/api/checker';
+import httpClient from '@/api/schema';
 import { useWebSocket, type WebSocketResponseDataType } from '@/hooks/useWebSocket';
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import { useAppStore } from '@/stores/app';
@@ -79,7 +80,7 @@ type DeviceInfo = {
 }
 
 // TODO: scann device mode:  "fast" | "server" 
-const CHECK_DEVICE_MODE:string = "server";
+const CHECK_DEVICE_MODE:string = "fast";
 
 // pinia store
 const appStore = useAppStore()
@@ -89,8 +90,9 @@ watch(deviceList, async (newList) => {
     if (device.state === "idle") {
       device.state = "checking";
       if(CHECK_DEVICE_MODE === "fast") {
-        const isAwtrix = await checkDeviceIsAwtrixDevice(device.ip);
-        device.isAwtrixDevice = isAwtrix;
+        // const isAwtrix = await checkDeviceIsAwtrixDevice(device.ip);
+        const res = await httpClient.checkIsAwtrixDevice({ ip: device.ip });
+        device.isAwtrixDevice = res.data.data;
         device.state = "done";
       }
       if(CHECK_DEVICE_MODE === "server") {

@@ -28,6 +28,17 @@ type WSServerMessage[T any] struct {
 	Refer   string `json:"refer"`
 }
 
+
+type HttpServerMessage[T any] struct {
+    // -1, -> error
+    // 0,  -> warning
+    // 1,  -> OK
+    // 2,  -> info
+	Code    int    `json:"code"`
+	Data    T      `json:"data"`
+	Message string `json:"message"`
+}
+
 // --------------------
 // Struct definitions
 // --------------------
@@ -94,3 +105,4 @@ type AwtrixSettings struct {
 }
 
 type AppLoopInfo map[string]int
+

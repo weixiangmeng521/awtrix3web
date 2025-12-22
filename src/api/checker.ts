@@ -1,5 +1,6 @@
 /**
  * check if the device is an Awtrix device
+ * @deprecated
  * @param ip 
  * @returns 
  */
@@ -28,5 +29,3 @@ export async function checkDeviceIsAwtrixDevice(ip: string) {
 
     return false;
 }
-
-

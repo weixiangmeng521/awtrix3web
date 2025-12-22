@@ -39,7 +39,7 @@ func (c *Client) writePump() {
 
 func (c *Client) Close() {
 	c.once.Do(func() {
-		close(c.done)      // ✅ 只关闭 done
+		close(c.done)
 		_ = c.conn.Close() // websocket 关闭
 	})
 }
