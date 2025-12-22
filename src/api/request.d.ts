@@ -45,6 +45,6 @@ export type CreateRequestConfig<T extends APISchema> = {
 export type CreateRequestClient<T extends APISchema> = {
     [K in keyof RemoveIndexSignature<T>]: RequestFunction<
         RemoveIndexSignature<T>[K]['request'],
-        AxiosResponse<RemoveIndexSignature<T>[K]['response']>
+        RemoveIndexSignature<T>[K]['response']
     >;
 };

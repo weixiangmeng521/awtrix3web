@@ -88,7 +88,7 @@ export function createRequestClient<T extends APISchema>(requestConfig: CreateRe
 
     // 拦截请求
     client.interceptors.response.use(
-        (res) => res,
+        (res) => res.data,
         (error: AxiosError) => {
             const requestError = requestConfig.errorHandler
                 ? requestConfig.errorHandler(error)
