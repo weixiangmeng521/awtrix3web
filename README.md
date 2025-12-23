@@ -33,17 +33,6 @@ The project is suitable for:
 
 ---
 
-## 📂 Project Structure
-awtrix3web/
-    ├── server/ # Go backend service
-    ├── src/ # Frontend source code (Vue + TS)
-    ├── public/ # Static assets / build output
-    ├── go.mod
-    ├── package.json
-    └── README.md
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
