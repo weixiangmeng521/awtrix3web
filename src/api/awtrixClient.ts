@@ -1,5 +1,8 @@
 import type { AppLoopInfo, AvailableTimeFormat, AwtrixSettings, AwtrixStats } from "./awtrix";
 
+/**
+ * @deprecated
+ */
 export default class AwtrixClient {
     private deviceIP: string;
     constructor(deviceIP: string) {

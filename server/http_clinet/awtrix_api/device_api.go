@@ -123,9 +123,9 @@ func (c *AwtrixClient) GetAwtrixDeviceInfo() (*controller.AwtrixStats, error) {
 /**
  * check device is awtrix device
  */
-func (c *AwtrixClient) CheckIsAwtrixDevice(ip string) bool {
+func (c *AwtrixClient) CheckIsAwtrixDevice(ip string, timeout time.Duration) bool {
 	client := &http.Client{
-		Timeout: 1000 * time.Millisecond,
+		Timeout: timeout,
 	}
 	url := fmt.Sprintf("http://%s/api/settings", ip)
 	resp, err := client.Get(url)

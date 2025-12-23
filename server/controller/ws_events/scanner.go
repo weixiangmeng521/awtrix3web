@@ -5,6 +5,7 @@ import (
 	"awtrix3web/http_clinet/awtrix_api"
 	"awtrix3web/scanner"
 	"log"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -95,7 +96,7 @@ func CheckAwtrixDevice(conn *websocket.Conn, data *controller.WSClientMessage[an
 	deviceInfo.Ip = ip;
 	// get awtrix clinet instance
 	instance := awtrix_api.GetInstance()
-	deviceInfo.IsAwtrixDevice = instance.CheckIsAwtrixDevice(ip)
+	deviceInfo.IsAwtrixDevice = instance.CheckIsAwtrixDevice(ip, 1000 * time.Millisecond)
 
 	// done event
 	message := controller.WSServerMessage[CheckedDeviceInfo]{

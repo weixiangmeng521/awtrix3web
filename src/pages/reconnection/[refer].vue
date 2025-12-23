@@ -2,11 +2,8 @@
   <AdminLayout>
     <template #main>
       <!-- scann card begin -->
-      <v-card max-width="450" 
-        title="Device Reboot" 
-        :text="`It may take a moment to complete. (${waitTime}s)`" 
-        class="mx-auto animate__animated animate__fadeIn"
-      >
+      <v-card max-width="450" title="Device Reboot" :text="`It may take a moment to complete. (${waitTime}s)`"
+        class="mx-auto animate__animated animate__fadeIn">
 
         <!-- this is connected okey icon -->
         <div class="py-12 text-center">
@@ -36,6 +33,7 @@ import AdminLayout from '@/layouts/AdminLayout.vue';
 import router from '@/router';
 import { useAppStore } from '@/stores/app';
 import { decodeBase64 } from '@/utils/base64';
+import httpClient from '@/api/schema';
 const route = useRoute();
 const refer = ref<string>("");
 const awtrixClinet = ref<AwtrixClient>();
@@ -45,6 +43,7 @@ const interval = 3000;
 const isLoading = ref(true);
 const sleep = async (t: number) => await new Promise(r => setTimeout(() => r(void 0), t));
 const waitTime = ref(0);
+
 
 const getReferParam = () => {
   const routeParams = route.params as { [key: string]: string };
@@ -60,14 +59,33 @@ const notifyAndJump = async (content: string) => {
 }
 
 
+
+const waitForReconnect = async () => {
+  const deviceIp = appStore.getConnectedDeviceIp;
+  if(!deviceIp) {
+    notifyAndJump("Initialize client error");
+    return;
+  }
+  while (true) {
+    const res = await httpClient.checkIsAwtrixDevice({ ip: deviceIp });
+    if (!res.data.isAwtrixDevice) {
+      await new Promise(r => setTimeout(() => r(void 0), 100));
+      console.log("Reconnect...");
+      continue;
+    }
+    console.log("Connected...");
+    return
+  }
+}
+
 const rebootDevice = async () => {
   if (!awtrixClinet.value) {
     notifyAndJump("Initialize client error");
     return;
   }
-  await sleep(3000)
-  awtrixClinet.value.reboot()
-  await awtrixClinet.value.requestUntilSuccess();
+  // reboot
+  httpClient.rebootDevice({})
+  await waitForReconnect();
   isLoading.value = false;
   await sleep(1800)
   const path = refer.value || "/";
@@ -79,7 +97,7 @@ onBeforeMount(() => {
 
 })
 
-let timeHander:number;
+let timeHander: number;
 onMounted(async () => {
   if (!appStore.getConnectedDeviceIp) {
     notifyAndJump("Invalid device IP, connection error");

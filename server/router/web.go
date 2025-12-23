@@ -63,4 +63,5 @@ func InitRouter(server *http.ServeMux) {
 
 	r.GET("/", http_events.Index)
 	r.GET("/api/check-is-awtrix-device", http_events.CheckIsAwtrixDevice)
+	r.GET("/api/reboot-device", http_events.RebootDevice)
 }

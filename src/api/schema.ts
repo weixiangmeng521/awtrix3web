@@ -10,15 +10,24 @@ interface TestAPISchema extends APISchema {
         response: {
             code: number,
             message: string,
+            data: { isAwtrixDevice: boolean },
+        };
+    },
+    rebootDevice: {
+        request: {};
+        response: {
+            code: number,
+            message: string,
             data: boolean
         };
-    };
+    }
 }
 
 const httpClient = createRequestClient<TestAPISchema>({
     baseURL: 'http://localhost:9527/',
     apis: {
         checkIsAwtrixDevice: 'GET /api/check-is-awtrix-device',
+        rebootDevice: 'GET /api/reboot-device'
     }
 });
 

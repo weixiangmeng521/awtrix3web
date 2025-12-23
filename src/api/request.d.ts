@@ -42,9 +42,11 @@ export type CreateRequestConfig<T extends APISchema> = {
 };
 
 // 创建请求客户端的类型约束
-export type CreateRequestClient<T extends APISchema> = {
-    [K in keyof RemoveIndexSignature<T>]: RequestFunction<
-        RemoveIndexSignature<T>[K]['request'],
-        RemoveIndexSignature<T>[K]['response']
-    >;
-};
+type CreateRequestClient<T extends APISchema> = {
+    [K in keyof T]: RequestFunction<
+        T[K]['request'],
+        T[K]['response']
+    >
+}
+
+

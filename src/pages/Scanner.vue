@@ -92,7 +92,7 @@ watch(deviceList, async (newList) => {
       if(CHECK_DEVICE_MODE === "fast") {
         // const isAwtrix = await checkDeviceIsAwtrixDevice(device.ip);
         const res = await httpClient.checkIsAwtrixDevice({ ip: device.ip });
-        device.isAwtrixDevice = res.data;
+        device.isAwtrixDevice = res.data.isAwtrixDevice;
         device.state = "done";
       }
       if(CHECK_DEVICE_MODE === "server") {
@@ -140,6 +140,7 @@ async function selectDevice(device: DeviceInfo) {
   const data = await client.getAwtrixDeviceInfo();
   appStore.setAwtrixDeviceInfo(data);
   scanState.value = 'idle';
+  send({event: "set_awtrix_device_ip", payload: device.ip})
 }
 
 

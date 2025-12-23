@@ -54,4 +54,5 @@ func (m *Manager) StopAll() {
 	for _, t := range m.taskers {
 		t.Stop()
 	}
+	m.taskers = make(map[string]*Tasker)
 }
