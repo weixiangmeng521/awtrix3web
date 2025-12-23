@@ -1,4 +1,4 @@
-# awtrix3web
+# Awtrix3 controller (Web version)
 
 A web-based control panel and API service for **AWTRIX 3** devices.  
 This project provides a full-stack solution (Go backend + Web frontend) for interacting with AWTRIX 3 via HTTP APIs.
