@@ -13,7 +13,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 /**i
  * check is awtrix device
  */
-type CheckIsAwtrixDeviceReponseData struct {
+type CheckIsAwtrixDeviceResponseData struct {
 	IsAwtrixDevice bool `json:"isAwtrixDevice"`
 }
 
@@ -26,7 +26,7 @@ func CheckIsAwtrixDevice(w http.ResponseWriter, r *http.Request) {
 
 	instance := awtrix_api.GetInstance()
 	isAwtrixDevice := instance.CheckIsAwtrixDevice(ip, 1000*time.Millisecond)
-	WriteOK(w, &CheckIsAwtrixDeviceReponseData{
+	WriteOK(w, &CheckIsAwtrixDeviceResponseData{
 		IsAwtrixDevice: isAwtrixDevice,
 	})
 }

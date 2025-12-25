@@ -11,6 +11,7 @@ export default class AwtrixClient {
 
     /**
      * get Awtrix Device Info
+     * @deprecated
      * @returns 
      */
     async getAwtrixDeviceInfo(): Promise<AwtrixStats> {
@@ -28,6 +29,7 @@ export default class AwtrixClient {
 
     /**
      * List of all transition effects
+     * @deprecated
      */
     async getTransitionEffectList() {
         const response = await fetch(`http://${this.deviceIP}/api/transitions`, {
@@ -42,6 +44,7 @@ export default class AwtrixClient {
 
     /**
      * get Awtrix Device Info
+     * @deprecated
      * @returns 
      */
     async getAwtrixApiLoopInfo(): Promise<AppLoopInfo> {
@@ -57,6 +60,7 @@ export default class AwtrixClient {
 
     /**
      * get Awtrix Device Info
+     * @deprecated
      * @returns 
      */
     async getAlTransitions(): Promise<Array<String>> {
@@ -72,6 +76,7 @@ export default class AwtrixClient {
 
     /**
      * get Awtrix Device Info
+     * @deprecated
      * @returns 
      */
     async getAllEffects(): Promise<Array<String>> {
@@ -88,7 +93,8 @@ export default class AwtrixClient {
 
 
     /**
-    * set awtrix power
+     * set awtrix power
+     * @deprecated    
     */
     async setAwtrixPower(state: Boolean): Promise<string> {
         const payload = {
@@ -110,6 +116,7 @@ export default class AwtrixClient {
 
     /**
      * get setting info
+     * @deprecated    
      */
     async getSettingInfo(): Promise<AwtrixSettings> {
         const response = await fetch(`http://${this.deviceIP}/api/settings`, {
@@ -127,6 +134,7 @@ export default class AwtrixClient {
 
     /**
      * set brightness auto controll
+     * @deprecated    
      */
     async setBrightnessAutoControll(state: boolean): Promise<string> {
         const payload = {
@@ -148,6 +156,7 @@ export default class AwtrixClient {
 
     /**
      * set calendar header color
+     * @deprecated    
      */
     async setCalendarHeaderColor(color: number | string): Promise<string> {
         const payload = {
@@ -171,6 +180,7 @@ export default class AwtrixClient {
 
     /**
      * Calendar body color of the time app. 
+     * @deprecated    
      */
     async setCalendarBodyColor(color: number | string): Promise<string> {
         const payload = {
@@ -191,6 +201,7 @@ export default class AwtrixClient {
 
     /**
      * Date text color of the time app. Use 0 for global text color.
+     * @deprecated    
      */
     async setDateAppColor(color: number | string): Promise<string> {
         const payload = {
@@ -213,6 +224,7 @@ export default class AwtrixClient {
 
     /**
      * Date format for the DateApp.
+     * @deprecated    
      */
     async setDateFormat(format: string): Promise<string> {
         const payload = {
@@ -234,6 +246,7 @@ export default class AwtrixClient {
 
     /**
      * Humidity text color of the time app. Use 0 for global text color.
+     * @deprecated    
      */
     async setHumidityAppColor(color: number | string): Promise<string> {
         const payload = {
@@ -256,6 +269,7 @@ export default class AwtrixClient {
 
     /**
      * Temperature text color of the time app. Use 0 for global text color.
+     * @deprecated    
      */
     async setTemperatureAppColor(color: number | string): Promise<string> {
         const payload = {
@@ -278,6 +292,7 @@ export default class AwtrixClient {
 
     /**
      * Battery text color of the time app. Use 0 for global text color.
+     * @deprecated    
      */
     async setBatteryAppColor(color: number | string): Promise<string> {
         const payload = {
@@ -302,6 +317,7 @@ export default class AwtrixClient {
 
     /**
      * Calendar text color in the time app.
+     * @deprecated    
      */
     async setCalendarTextColor(color: number | string): Promise<string> {
         const payload = {
@@ -325,6 +341,7 @@ export default class AwtrixClient {
 
     /**
      * Shows the temperature in Celsius (Fahrenheit when false).
+     * @deprecated    
      */
     async setTempUnit(state: boolean): Promise<string> {
         const payload = {
@@ -349,6 +366,7 @@ export default class AwtrixClient {
 
     /**
      * Time format for the TimeApp.
+     * @deprecated    
      */
     async setTimeFormat(format: AvailableTimeFormat): Promise<string> {
         const payload = {
@@ -371,7 +389,8 @@ export default class AwtrixClient {
 
 
     /**
-    * set Matrix brightness.
+     * set Matrix brightness.
+     * @deprecated    
     */
     async setMatrixBrightness(value: number) {
         const payload = {
@@ -394,6 +413,7 @@ export default class AwtrixClient {
 
     /**
      * Automatic switching to the next app.
+     * @deprecated    
      */
     async setAutoSwitching2NextApp(state: boolean) {
         const payload = {
@@ -414,7 +434,8 @@ export default class AwtrixClient {
     }
 
     /**
-     * 	Choose between app transition effects.
+     * Choose between app transition effects.
+     * @deprecated    
      */
     async setTransitionEffect(value: number) {
         const payload = {
@@ -437,7 +458,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Switch to Specific App
+     * Switch to Specific App
+     * @deprecated    
     */
     async setSpecificApp(appname: string) {
         const payload = {
@@ -458,7 +480,8 @@ export default class AwtrixClient {
     }
 
     /**
-    * Time taken for the transition to the next app in milliseconds.
+     * Time taken for the transition to the next app in milliseconds.
+     * @deprecated    
     */
     async setTranstionTime(time: number) {
         const payload = {
@@ -481,7 +504,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Global text color.
+     * Global text color.
+     * @deprecated    
     * @param color	RGB array or hex color
     */
     async setGlobalTextColor(color: string | number) {
@@ -504,8 +528,9 @@ export default class AwtrixClient {
 
 
     /**
-    * Sets a global effect overlay (cannot be used with app specific overlays).
-    * @param key {OverlayEffects}
+     * Sets a global effect overlay (cannot be used with app specific overlays).
+     * @deprecated    
+     * @param key {OverlayEffects}
     */
     async setOverlayEffect(key: string) {
         const payload = {
@@ -528,8 +553,9 @@ export default class AwtrixClient {
 
 
     /**
-    * Scroll speed modification
-    * @param num 0-100%
+     * Scroll speed modification
+     * @deprecated    
+     * @param num 0-100%
     */
     async setScrollSpeedModification(num: number) {
         const payload = {
@@ -551,7 +577,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Display text in uppercase.
+     * Display text in uppercase.
+     * @deprecated
     */
     async setDisplayTextInUppercase(value: boolean) {
         const payload = {
@@ -574,7 +601,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Duration an app is displayed in seconds.
+     * Duration an app is displayed in seconds.
+     * @deprecated    
     */
     async setDurationAnAppIsDisplayedInSeconds(sec: number) {
         const payload = {
@@ -597,7 +625,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Block physical navigation keys (still sends input to MQTT).
+     * Block physical navigation keys (still sends input to MQTT).
+     * @deprecated
     */
     async setBlockPhysicalNavigationKeys(state: Boolean) {
         const payload = {
@@ -619,7 +648,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Play a RTTTL sound from a given RTTTL string:
+     * Play a RTTTL sound from a given RTTTL string:
+     * @deprecated    
     */
     async sendRTTTLSoundFromString(str: string) {
         const payload = {
@@ -642,7 +672,8 @@ export default class AwtrixClient {
 
 
     /**
-    * Play a RTTTL sound from the MELODIES folder. If you're using a DFplayer, use the /sound API and enter the 4 digit number of your MP3.
+     * Play a RTTTL sound from the MELODIES folder. If you're using a DFplayer, use the /sound API and enter the 4 digit number of your MP3.
+     * @deprecated    
     */
     async sendPlaySound(soundName: string) {
         const payload = {
@@ -665,6 +696,7 @@ export default class AwtrixClient {
 
     /**
      * Internal helper: enable or disable a native AWTRIX app
+     * @deprecated    
      */
     private async setNativeAppState(app: string, state: boolean) {
         const payload = {
@@ -688,6 +720,7 @@ export default class AwtrixClient {
 
     /**
      * Changes the time app style.
+     * @deprecated    
      */
     async seTimeMode(mode: number) {
         const payload = {
@@ -710,6 +743,7 @@ export default class AwtrixClient {
 
     /**
      * Text color of the time app. Use 0 for global text color.
+     * @deprecated    
      */
     async setTextColorOfTimeApp(color: number | string) {
         const payload = {
@@ -735,38 +769,69 @@ export default class AwtrixClient {
        Native App Toggles (Require Reboot)
     --------------------------------- */
 
-    // Enable or disable the native time app (requires reboot).
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */ 
     async setTIM_APPState(state: boolean) {
         return this.setNativeAppState("TIM", state);
     }
 
-    // Enable or disable the native date app (requires reboot).
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */     
     async setDAT_APPState(state: boolean) {
         return this.setNativeAppState("DAT", state);
     }
 
-    // Enable or disable the native humidity app (requires reboot).
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */     
     async setHUM_APPState(state: boolean) {
         return this.setNativeAppState("HUM", state);
     }
 
-    // Enable or disable the native temperature app (requires reboot).
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */     
     async setTEMP_APPState(state: boolean) {
         return this.setNativeAppState("TEMP", state);
     }
 
-    // Enable or disable the native battery app (requires reboot).
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */     
     async setBAT_APPState(state: boolean) {
         return this.setNativeAppState("BAT", state);
     }
 
-    // Enable or disable the matrix app (like power but without animation)
+    /**
+     * Enable or disable the native time app (requires reboot). 
+     * @deprecated
+     * @param state 
+     * @returns 
+     */     
     async setMATP_APPState(state: boolean) {
         return this.setNativeAppState("MATP", state);
     }
 
     /**
-    * reboot device
+     * reboot device
+     * @deprecated    
     */
     async reboot() {
         const response = await fetch(`http://${this.deviceIP}/api/reboot`, {
@@ -784,6 +849,7 @@ export default class AwtrixClient {
 
     /**
      * wait device reconnection.
+     * @deprecated    
      */
     async requestUntilSuccess() {
         const request = async (maxWait = 3000) => {
