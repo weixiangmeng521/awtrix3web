@@ -58,8 +58,6 @@ const notifyAndJump = async (content: string) => {
   router.push("/");
 }
 
-
-
 const waitForReconnect = async () => {
   const deviceIp = appStore.getConnectedDeviceIp;
   if(!deviceIp) {

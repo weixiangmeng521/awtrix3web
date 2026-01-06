@@ -26,6 +26,7 @@ const emit = defineEmits<{
 }>()
 
 function changeAppEvent(value: string) {
+    if(props.currentApp === value) return;    
     if (lock.value) return;
     emit('changeApp', value);
     lock.value = true;

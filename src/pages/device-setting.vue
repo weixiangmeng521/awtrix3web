@@ -45,6 +45,7 @@ import AwtrixClient from '@/api/awtrixClient';
 import type { AppLoopInfo, AwtrixSettings, AwtrixStats } from '@/api/awtrix';
 import { useNotificationStore } from '@/hooks/useNotificationStore';
 import { useWebSocket, type WebSocketResponseDataType } from '@/hooks/useWebSocket';
+import httpClient from '@/api/schema';
 const awtrixClinet = ref<AwtrixClient>();
 const appStore = useAppStore();
 const deviceInfo = ref<AwtrixStats>();
@@ -54,6 +55,7 @@ const notification = useNotificationStore();
 const intervalTime = 3000;
 const transitionList = ref<string[]>([]);
 const { send, onMessage } = useWebSocket();
+
 
 
 /**
@@ -288,14 +290,13 @@ async function changeScreenBrightnessEvent(value: number) {
  * get all looping app
  */
 async function fetchApiLoop() {
-    if (!awtrixClinet.value) return;
     let data;
     try {
-        data = await awtrixClinet.value.getAwtrixApiLoopInfo();
+        data = await httpClient.getApiLoop({});
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }
-    appLoopInfo.value = data;
+    appLoopInfo.value = data?.data;
 }
 
 /**
@@ -303,9 +304,8 @@ async function fetchApiLoop() {
  */
 async function setTransitionTime(ms: number) {
     if (!awtrixClinet.value) return;
-    let data;
     try {
-        data = await awtrixClinet.value.setTranstionTime(ms);
+        await httpClient.setTranstionSpeed({ value: ms });
     } catch (e) {
         notification.push("Awtrix connection error", 'error', intervalTime);
     }

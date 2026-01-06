@@ -6,8 +6,17 @@ import (
 	"time"
 )
 
+// default index handler
 func Index(w http.ResponseWriter, r *http.Request) {
-	WriteOK(w, "Hello world")
+	if r.URL.Path != "/" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(`{"error":"not found"}`))
+		return
+	}
+
+	// 正常首页逻辑
+	w.Write([]byte("Hello World!"))
 }
 
 /**i

@@ -67,4 +67,8 @@ func InitRouter(server *http.ServeMux) {
 	r.GET("/api/effects", http_events.GetEffectList)
 	r.GET("/api/loop", http_events.GetAwtrixLoopInfo)
 	r.GET("/api/stats", http_events.GetAwtrixStats)
+	r.GET("/api/reboot-device", http_events.RebootDevice)
+	// set
+	r.POST("/api/transitions/speed", http_events.SetTransitionSpeed)
+
 }
