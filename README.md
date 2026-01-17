@@ -18,8 +18,8 @@ The project is suitable for:
 ---
 
 ## TODO
-### Home Assistant Support
-### Docker Deployment
+-  Home Assistant Support
+- Docker Deployment
 
 ## 🧱 Tech Stack
 
