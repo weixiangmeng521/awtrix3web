@@ -24,8 +24,9 @@
             <!-- divider end -->
             <CSwitch :state="(props.autoNextApp ?? false)" title="Auto Transition"
                 @update-state="changeAutoNextAppState" />
+            <!-- if attribute for update state -->
             <CPullDown :list="props.transitionList" :selected="props.settingInfo?.TEFF" placeHolder="Transition effect"
-                @on-changed="onTransitionChangedEvent" />
+                @on-changed="onTransitionChangedEvent" v-if="props.transitionList.length > 0" />
             <CSingleNumberInput :value="props.settingInfo.TSPEED" :min="0" :max="10000"
                 placeholder="Transition time (ms)" @submit="transitionTimeSubmit" />
             <CSingleNumberInput :value="props.settingInfo.ATIME" :min="0" :max="10000"
@@ -105,7 +106,6 @@ const transitionTimeSubmit = (value: Number) => {
 const onAppDurationTimeChangedEvent = (value: Number) => {
     emit("onAppDurationTimeChanged", value as number);
 }
-
 
 </script>
 <style lang="css" scoped></style>
