@@ -1,42 +1,6 @@
 // Utilities
 import type { AwtrixSettings, AwtrixStats } from '@/api/awtrix';
-import { useWebSocket } from '@/hooks/useWebSocket';
-import { defineStore, type PiniaCustomStateProperties, type StateTree } from 'pinia'
-
-
-/**
- * load data from localStorage before checking store
- * @param key 
- * @returns 
- */
-const loadDataBoforeCheckLocalStorage = <T>(key: string, state: PiniaCustomStateProperties<StateTree>): T => {
-  const data = window.localStorage.getItem(key);
-  if (data) {
-    try {
-      const res = JSON.parse(data) as T;
-      return res as T;
-    } catch (e) {
-      return data as T;
-    }
-  }
-  return (state as { [key: string]: unknown })[key] as T;
-}
-
-
-function setData2LocalStoraget<T extends object>(
-  that: T,
-  key: keyof T,
-  data: unknown
-) {
-  const target = that[key];
-  if (isObject(target) && isObject(data)) {
-    Object.assign(target, data);
-    window.localStorage.setItem(key as string, JSON.stringify(target));
-    return;
-  }
-  that[key] = data as any;
-  window.localStorage.setItem(key as string, JSON.stringify(data));
-}
+import { defineStore } from 'pinia'
 
 
 function isObject(val: unknown): val is Record<string, any> {
@@ -48,48 +12,65 @@ function isObject(val: unknown): val is Record<string, any> {
 export type SystemThemeType = 'dark' | 'light';
 export const useAppStore = defineStore('app', {
   state: () => ({
-    theme: 'light' as SystemThemeType,
-    connectedDeviceIp: '',
-    awtrixInfo: null as null | AwtrixStats,
-    awtrixSettings: null as null | AwtrixSettings,
-    awtrixTransitionEffects: [] as string[],
+    theme: (localStorage.getItem('theme') as SystemThemeType) || 'light',
+    connectedDeviceIp: localStorage.getItem('connectedDeviceIp') || '',
+    awtrixInfo: JSON.parse(localStorage.getItem('awtrixInfo') || 'null'),
+    awtrixSettings: JSON.parse(localStorage.getItem('awtrixSettings') || 'null'),
+    awtrixTransitionEffects: JSON.parse(
+      localStorage.getItem('awtrixTransitionEffects') || '[]'
+    ),
   }),
   getters: {
-    getSystemTheme: (state) => {
-      return loadDataBoforeCheckLocalStorage<SystemThemeType>('theme', state);
-    },
-    getConnectedDeviceIp: (state) => {
-      return loadDataBoforeCheckLocalStorage<string>('connectedDeviceIp', state);
-    },
-    getAwtrixInfo: (state) => {
-      return loadDataBoforeCheckLocalStorage<AwtrixStats>('awtrixInfo', state);
-    },
-    getAwtrixSettings: (state) => {
-      return loadDataBoforeCheckLocalStorage<AwtrixSettings>('awtrixSettings', state);
-    },
-    getAwtrixTransitionEffects: (state) => {
-      return loadDataBoforeCheckLocalStorage<string[]>('awtrixTransitionEffects', state);
-    }
+    getSystemTheme: (state) => state.theme,
+    getConnectedDeviceIp: (state) => state.connectedDeviceIp,
+    getAwtrixInfo: (state) => state.awtrixInfo,
+    getAwtrixSettings: (state) => state.awtrixSettings,
+    getAwtrixTransitionEffects: (state) => state.awtrixTransitionEffects,
   },
   actions: {
     setShouldConnectDeviceIp(ip: string) {
-      setData2LocalStoraget(this, "connectedDeviceIp", ip)
+      this.connectedDeviceIp = ip
+      localStorage.setItem('connectedDeviceIp', ip)
     },
+
     setAwtrixDeviceInfo(info: AwtrixStats) {
-      setData2LocalStoraget(this, "awtrixInfo", info)
+      this.awtrixInfo = info
+      localStorage.setItem('awtrixInfo', JSON.stringify(info))
     },
+
     setAwtrixSettings(info: AwtrixSettings) {
-      setData2LocalStoraget(this, "awtrixSettings", info)
+      this.awtrixSettings = info
+      localStorage.setItem('awtrixSettings', JSON.stringify(info))
     },
+
     setSystemTheme(theme: SystemThemeType) {
-      setData2LocalStoraget(this, 'theme', theme)
+      this.theme = theme
+      localStorage.setItem('theme', theme)
     },
+
     setAwtrixTransitionEffects(list: string[]) {
-      setData2LocalStoraget(this, 'awtrixTransitionEffects', list)
+      this.awtrixTransitionEffects = list
+      localStorage.setItem(
+        'awtrixTransitionEffects',
+        JSON.stringify(list)
+      )
     },
+
+    clearConnection() {
+      this.connectedDeviceIp = ''
+      this.awtrixInfo = null
+      this.awtrixSettings = null
+      this.awtrixTransitionEffects = []
+
+      localStorage.removeItem('connectedDeviceIp')
+      localStorage.removeItem('awtrixInfo')
+      localStorage.removeItem('awtrixSettings')
+      localStorage.removeItem('awtrixTransitionEffects')
+    },
+
     clearAll() {
-      window.localStorage.clear();
-      this.$dispose();
+      this.$reset()          // ✅ 正确清空 store
+      localStorage.clear()   // ⚠️ 如果你只想清 app 的，建议只 remove 指定 key
     }
-  },
+  }
 })
