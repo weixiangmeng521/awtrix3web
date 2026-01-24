@@ -34,7 +34,7 @@ export const useAppStore = defineStore('app', {
     },
 
     setAwtrixDeviceInfo(info: AwtrixStats) {
-      this.awtrixInfo = info
+      this.awtrixInfo = info 
       localStorage.setItem('awtrixInfo', JSON.stringify(info))
     },
 

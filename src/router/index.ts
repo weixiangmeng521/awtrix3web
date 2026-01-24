@@ -65,10 +65,10 @@ router.beforeEach((to, from, next) => {
     if (cb) {
       const errorMsg = cb();
       if (errorMsg) {
-        // valid fail
-        const notify =  useNotificationStore();
-        notify.push(errorMsg, 'warning', 3000);
-        next("/");
+        // valid failed
+        // to base64 encode
+        const encodedErrorMsg = window.btoa(errorMsg);
+        next("/error?msg=" + encodedErrorMsg);
         return;
       }
     }

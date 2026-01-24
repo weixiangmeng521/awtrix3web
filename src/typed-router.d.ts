@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/device-info': RouteRecordInfo<'/device-info', '/device-info', Record<never, never>, Record<never, never>>,
     '/device-setting': RouteRecordInfo<'/device-setting', '/device-setting', Record<never, never>, Record<never, never>>,
+    '/error': RouteRecordInfo<'/error', '/error', Record<never, never>, Record<never, never>>,
     '/reconnection/[refer]': RouteRecordInfo<'/reconnection/[refer]', '/reconnection/:refer', { refer: ParamValue<true> }, { refer: ParamValue<false> }>,
     '/scanner': RouteRecordInfo<'/scanner', '/scanner', Record<never, never>, Record<never, never>>,
     '/settings/battery-app': RouteRecordInfo<'/settings/battery-app', '/settings/battery-app', Record<never, never>, Record<never, never>>,
@@ -51,6 +52,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/device-setting.vue': {
       routes: '/device-setting'
+      views: never
+    }
+    'src/pages/error.vue': {
+      routes: '/error'
       views: never
     }
     'src/pages/reconnection/[refer].vue': {
